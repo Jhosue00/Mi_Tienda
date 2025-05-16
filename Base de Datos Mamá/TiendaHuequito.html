@@ -1,0 +1,2502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda el Huequito - Inicio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6D28D9"> <link rel="apple-touch-icon" href="images/icons/icon-192x192.png"> <style>
+        /* Estilos Generales y Modo Claro (Predeterminado) */
+        :root {
+            --body-bg-light: #FDF2F8;
+            --body-bg-image-light: url('https://marketplace.canva.com/EAFjvluV7Wo/2/0/1600w/canva-fondo-de-pantalla-gradiente-rosa-y-celeste-pastel-h_F-FdyBGSk.jpg');
+
+            --footer-bg-light: rgba(249, 235, 242, 0.9);
+            --border-subtle-light: rgba(0,0,0,0.07);
+
+            --text-color-light: #1F2937;
+            --text-secondary-light: #4B5563;
+
+            --section-title-header-light: #6D28D9;
+            --page-title-light: #581C87;
+
+            --card-bg-light: rgba(255, 255, 255, 0.85);
+            --page-container-bg-light: rgba(255, 255, 255, 0.95);
+            --sidebar-card-bg-light: rgba(240, 245, 255, 0.85);
+            --card-border-light: rgba(0,0,0,0.06);
+
+            --input-bg-light: white;
+            --input-border-light: #D1D5DB;
+            --input-text-light: #1F2937;
+
+            --table-header-bg-light: #F3E8FF;
+            --table-header-text-light: #581C87;
+            --table-border-light: #E5E7EB;
+            --category-header-row-bg-light: #D8B4FE; /* Morado más intenso (purple-300) */
+            --category-header-row-text-light: #581C87; /* Morado oscuro (purple-900) */
+
+
+            --button-tab-bg-light: rgba(230, 230, 230, 0.7);
+            --button-tab-text-light: #4A5568;
+            --button-tab-active-bg-light: #FB923C;
+            --button-tab-active-text-light: #FFFFFF;
+
+            --main-button-gradient-start-light: #14B8A6;
+            --main-button-gradient-end-light: #0D9488;
+            --main-button-text-light: white;
+            --main-button-hover-gradient-start-light: #0D9488;
+            --main-button-hover-gradient-end-light: #0F766E;
+
+            --control-button-bg-light: #EDE9FE;
+            --control-button-text-light: #5B21B6;
+            --control-button-hover-bg-light: #DDD6FE;
+
+            --sidebar-label-bg-light: #A5B4FC;
+            --sidebar-label-text-light: #3730A3;
+
+            --decorative-icon-color-light: #EC4899;
+        }
+
+        html, body { height: 100%; margin: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--body-bg-light);
+            background-image: var(--body-bg-image-light);
+            background-size: cover; background-position: center; background-attachment: fixed;
+            display: flex; flex-direction: column;
+            color: var(--text-color-light);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .floating-action-button {
+            position: fixed;
+            right: 20px;
+            z-index: 1050;
+            width: 68px;
+            height: 68px;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.2rem;
+            line-height: 1;
+            border-radius: 12px;
+            background-color: var(--card-bg-light);
+            color: var(--text-color-light);
+            border: 1px solid var(--card-border-light);
+            box-shadow: 0 6px 12px -2px rgba(0,0,0,0.08), 0 3px 7px -3px rgba(0,0,0,0.06);
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.3s, top 0.3s;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        #header-back-to-menu-button { /* Botón MENU */
+            top: 20px;
+        }
+        #floating-back-button { /* Botón ATRÁS */
+            top: 20px;
+        }
+        #btn-go-to-configuraciones { /* Botón CONFIGURACIONES */
+            top: 20px; /* Se mostrará cuando el de MENU esté oculto, o debajo si se decide mostrar ambos */
+        }
+         /* Si se decide que MENU y CONFIG pueden estar visibles al mismo tiempo en alguna vista, ajustar el 'top' de CONFIG */
+        /* Por ejemplo, si MENU está en top:20px y tiene 68px de alto + 12px de margen: */
+        /* #btn-go-to-configuraciones.visible-con-menu { top: 100px; } */
+
+
+        .floating-action-button:hover {
+            background-color: var(--page-container-bg-light);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 16px -3px rgba(0,0,0,0.12), 0 4px 8px -4px rgba(0,0,0,0.08);
+        }
+        .floating-action-button i {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        .floating-action-button span {
+            font-size: 0.7rem;
+            display: block;
+            font-weight: 500;
+        }
+
+
+        .main-button {
+            background-image: linear-gradient(to bottom right, var(--main-button-gradient-start-light), var(--main-button-gradient-end-light));
+            color: var(--main-button-text-light); padding: 1.8rem 1.3rem; font-size: 1.5rem;
+            border-radius: 0.875rem; text-align: center; font-weight: 600; cursor: pointer;
+            transition: all 0.3s ease; width: 100%;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); border: none;
+        }
+        .main-button:hover {
+            background-image: linear-gradient(to bottom right, var(--main-button-hover-gradient-start-light), var(--main-button-hover-gradient-end-light));
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+        }
+        .control-button {
+            background-color: var(--control-button-bg-light); color: var(--control-button-text-light);
+            padding: 0.75rem 1.5rem; font-size: 0.9rem; border-radius: 8px; text-align: center;
+            font-weight: 500; cursor: pointer; transition: background-color 0.3s, color 0.3s; border: 1px solid transparent;
+        }
+        .control-button:hover { background-color: var(--control-button-hover-bg-light); }
+        .section-title-header {
+            font-family: 'Pacifico', cursive; font-size: 5rem; font-weight: bold;
+            color: var(--section-title-header-light); text-align: center;
+            margin-bottom: 2rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.15); position: relative;
+        }
+        .sidebar-label {
+            background-color: var(--sidebar-label-bg-light); color: var(--sidebar-label-text-light);
+            padding: 10px 20px; border-radius: 8px; text-align: center; font-weight: 600;
+        }
+        .tab-button {
+            background-color: var(--button-tab-bg-light); color: var(--button-tab-text-light);
+            padding: 8px 12px; border-radius: 6px 6px 0 0; font-size: 0.8rem;
+            font-weight: 500; cursor: pointer; margin-right: 2px; margin-bottom: 2px;
+            border: 1px solid rgba(192, 192, 192, 0.4); border-bottom: none;
+            backdrop-filter: blur(2px); transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+            display: inline-flex; align-items: center; white-space: nowrap;
+        }
+        .tab-button.active {
+            background-color: var(--button-tab-active-bg-light); color: var(--button-tab-active-text-light);
+            border-color: var(--button-tab-active-bg-light); border-bottom: 1px solid var(--button-tab-active-bg-light);
+            font-weight: 600;
+        }
+        .delete-category-x {
+            margin-left: 8px; color: #EF4444; font-weight: bold; cursor: pointer;
+            display: none; padding: 2px 4px; border-radius: 4px;
+        }
+        .delete-category-x:hover { background-color: #FECACA; }
+        body.edit-mode-active .delete-category-x { display: inline; }
+        #app-container { display: flex; flex-direction: column; flex-grow: 1; position: relative; }
+        .main-content-wrapper { flex-grow: 1; display: flex; flex-direction: column; padding-bottom: 1rem; }
+        #menu-page.main-content-wrapper {
+            justify-content: center; align-items: center; flex-grow: 1;
+            padding-top: 2rem; padding-bottom: 2rem;
+        }
+        #menu-page .main-content-grid {
+            width: 100%; max-width: 1024px; display: grid;
+            gap: 2.5rem; align-items: center;
+        }
+        @media (min-width: 1024px) {
+            #menu-page .main-content-grid { grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr); }
+        }
+        #menu-page .left-panel {
+            display: flex; flex-direction: column; justify-content: center;
+            align-items: center; padding: 1rem 0; position: relative;
+        }
+        #menu-page .content-card {
+            width: 100%; max-width: 680px; padding: 2rem; position: relative;
+        }
+        #menu-page .menu-actions-layout {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 1.75rem; margin-bottom: 1.5rem;
+        }
+        #menu-page .menu-bottom-controls {
+            margin-top: 2rem; padding-top: 0; width: 100%;
+            display: flex; justify-content: center;
+        }
+        .content-card {
+            background-color: var(--card-bg-light); padding: 1.5rem; border-radius: 16px;
+            box-shadow: 0 6px 12px -2px rgba(0,0,0,0.08), 0 3px 7px -3px rgba(0,0,0,0.06);
+            backdrop-filter: blur(10px); transition: background-color 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--card-border-light);
+        }
+        .sidebar-content-card {
+            background-color: var(--sidebar-card-bg-light); border: 1px solid var(--card-border-light);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 1.75rem; max-width: 380px; margin: 0 auto; height: 100%;
+        }
+        .sidebar-content-card h2.text-xl { color: #111827; font-weight: 700; }
+        .sidebar-content-card .icon-container {
+            width: 6rem; height: 6rem; margin-bottom: 1.25rem;
+        }
+         .sidebar-content-card .icon-container i { font-size: 3rem; }
+        .sidebar-content-card .image-container { height: 12rem; margin-bottom: 1.25rem; }
+        .decorative-icon {
+            position: absolute; font-size: 1.5rem;
+            color: var(--decorative-icon-color-light); opacity: 0.6; pointer-events: none;
+        }
+        .page-container {
+            background-color: var(--page-container-bg-light); padding: 1.5rem 2rem; border-radius: 12px;
+            box-shadow: 0 8px 16px -3px rgba(0,0,0,0.09), 0 4px 8px -4px rgba(0,0,0,0.07);
+            backdrop-filter: blur(12px); width: 90%; max-width: 1280px;
+            margin-left: auto; margin-right: auto; position: relative;
+            transition: background-color 0.3s, box-shadow 0.3s; margin-top: 1.5rem;
+            border: 1px solid var(--card-border-light);
+        }
+        .page-header {
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 1.5rem; padding-bottom: 1rem;
+            border-bottom: 2px solid var(--table-border-light); transition: border-color 0.3s;
+        }
+        .page-title {
+            font-size: 1.8rem; font-weight: 700; color: var(--page-title-light);
+            text-align: center; transition: color 0.3s;
+        }
+        .form-label {
+            display: block; margin-bottom: 0.25rem; font-weight: 500;
+            color: var(--text-secondary-light); font-size: 0.8rem; transition: color 0.3s;
+        }
+        .form-input, .form-select {
+            width: 100%; padding: 0.5rem 0.7rem;
+            border: 1px solid var(--input-border-light);
+            border-radius: 6px; background-color: var(--input-bg-light);
+            transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s, color 0.3s;
+            box-sizing: border-box; font-size: 0.875rem; color: var(--input-text-light);
+        }
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button { }
+        input[type=number] { }
+        .form-input:focus, .form-select:focus {
+            outline: none; border-color: #14B8A6;
+            box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.4);
+        }
+        .form-input[readonly] { background-color: #F3F4F6; color: #4B5563; cursor: not-allowed;}
+        .products-table {
+            width: 100%; border-collapse: collapse; margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); font-size: 0.875rem;
+            border-radius: 8px; overflow: hidden;
+        }
+        .products-table th, .products-table td {
+            border: 1px solid var(--table-border-light);
+            padding: 0.6rem 0.8rem; text-align: left; vertical-align: middle;
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+        }
+        .products-table th {
+            background-color: var(--table-header-bg-light); font-weight: 600; color: var(--table-header-text-light);
+            white-space: nowrap; padding: 0.5rem 0.6rem; font-size: 0.75rem;
+        }
+        .products-table td.category-header-row {
+            background-color: var(--category-header-row-bg-light);
+            color: var(--category-header-row-text-light);
+            font-weight: 600;
+            text-align: center;
+            padding: 0.75rem;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            border-top: 2px solid var(--table-border-light);
+            border-bottom: 2px solid var(--table-border-light);
+        }
+        .products-table td input[type="text"],
+        .products-table td input[type="number"],
+        .products-table td select {
+            width: 100%; padding: 0.4rem 0.6rem; border: 1px solid var(--input-border-light);
+            border-radius: 4px; box-sizing: border-box; font-size: 0.875rem;
+            background-color: var(--input-bg-light); color: var(--input-text-light);
+        }
+        .products-table td input:focus,
+        .products-table td select:focus {
+             border-color: #14B8A6; box-shadow: 0 0 0 1px rgba(20, 184, 166, 0.4);
+        }
+        .products-table td input[readonly] { background-color: #F3F4F6; color: #4B5563; border-color: #E5E7EB;}
+        #detalle-venta-page #detalle-venta-table-body td:nth-child(2) { color: #000000; font-weight: 500; }
+        #detalle-venta-page .form-label { color: #374151; font-weight: 600; }
+        #detalle-venta-page label[for="detalle-venta-cliente"],
+        #detalle-venta-page label[for="detalle-venta-direccion"] { color: #1F2937; font-weight: 700; }
+        #detalle-venta-page #detalle-venta-fecha,
+        #detalle-venta-page #detalle-venta-numero-nota { color: #000000; font-weight: 500;}
+        #detalle-venta-page #detalle-venta-cliente,
+        #detalle-venta-page #detalle-venta-direccion { color: #000000 !important; font-weight: 500; background-color: #FFFFFF !important; }
+        #detalle-venta-page h3.text-md { color: #000000; font-weight: 600; }
+        #venta-page .flex.justify-between.items-center.mb-1 > div:nth-child(2) { color: #000000; font-weight: 700; }
+        .page-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem; }
+        .action-button {
+            padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600;
+            cursor: pointer; transition: background-color 0.3s, transform 0.2s, color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: none;
+        }
+        .action-button:hover { transform: translateY(-2px); box-shadow: 0 3px 6px rgba(0,0,0,0.15); }
+        .action-button-print { background-color: #3B82F6; color: white; }
+        .action-button-print:hover { background-color: #2563EB; }
+        .action-button-save-sale { background-color: #16A34A; color: white; }
+        .action-button-save-sale:hover { background-color: #15803D; }
+        .action-button-clear-sale { background-color: #F97316; color: white; }
+        .action-button-clear-sale:hover { background-color: #EA580C; }
+        .action-button-save { background-color: #10B981; color: white; }
+        .action-button-save:hover { background-color: #059669; }
+        .action-button-buy { background-color: #84CC16; color: white; }
+        .action-button-buy:hover { background-color: #65A30D; }
+        .hidden { display: none !important; }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        .ingreso-page .form-input { font-size: 0.875rem; padding: 0.5rem 0.7rem; }
+        .table-action-button { padding: 0.25rem 0.5rem; font-size: 0.75rem; border-radius: 4px; margin-left: 0.25rem;}
+        .search-controls-container { margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+        @media (min-width: 768px) { .search-controls-container { flex-direction: row; align-items: center; gap: 1rem; } }
+        #search-results-table { font-size: 0.9rem; }
+        #search-results-table th, #search-results-table td { padding: 0.75rem; }
+        .clear-search-btn {
+            padding: 0.5rem 0.75rem; background-color: #9CA3AF; color: white;
+            border-radius: 6px; transition: background-color 0.3s;
+        }
+        .clear-search-btn:hover { background-color: #6B7280; }
+        .venta-totals-container {
+            margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--table-border-light);
+            display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;
+        }
+        .venta-totals-container div { display: flex; justify-content: space-between; width: 100%; max-width: 350px; }
+        .venta-totals-container label { font-weight: 600; color: var(--text-color-light); margin-right: 1rem; }
+        .venta-totals-container span,
+        .venta-totals-container input { font-weight: 600; color: var(--text-color-light); text-align: right; }
+        #venta-descuento {
+            width: 120px; padding: 0.3rem 0.5rem; border: 1px solid var(--input-border-light);
+            border-radius: 4px; background-color: var(--input-bg-light); color: var(--input-text-light);
+        }
+        #venta-total-final { font-size: 1.25rem; color: #7E22CE; }
+        .nota-venta-numero { font-size: 0.9rem; color: var(--text-secondary-light); text-align: right; margin-top: -0.5rem; margin-bottom: 1rem;}
+        #info-ventas-page .products-table th,
+        #info-ventas-page .products-table td { font-size: 0.85rem; padding: 0.6rem 0.8rem;}
+        .footer-guias {
+            position: static; width: 100%; height: auto; min-height: 70px;
+            padding-top: 0.5rem; padding-bottom: 0.5rem;
+            background-color: var(--footer-bg-light);
+            border-top: 1px solid var(--border-subtle-light);
+            backdrop-filter: blur(8px); margin-top: 1rem;
+        }
+        .theme-switch-wrapper { display: flex; align-items: center; gap: 0.5rem; }
+        .theme-switch { display: inline-block; height: 26px; position: relative; width: 50px; }
+        .theme-switch input { display:none; }
+        .slider {
+            background-color: #ccc; bottom: 0; cursor: pointer; left: 0; position: absolute;
+            right: 0; top: 0; transition: .4s;
+        }
+        .slider:before {
+            background-color: #fff; bottom: 3px; content: ""; height: 20px; left: 3px;
+            position: absolute; transition: .4s; width: 20px;
+        }
+        input:checked + .slider { background-color: #2196F3; }
+        input:checked + .slider:before { transform: translateX(24px); }
+        .slider.round { border-radius: 26px; }
+        .slider.round:before { border-radius: 50%; }
+        .theme-switch-wrapper .fas { font-size: 1rem; color: var(--text-secondary-light); }
+
+        body.dark-mode {
+            --body-bg-dark: #111827;
+            --footer-bg-dark: rgba(30, 41, 59, 0.9);
+            --border-subtle-dark: rgba(255,255,255,0.1);
+            --text-color-dark: #f3f4f6;
+            --text-secondary-dark: #9ca3af;
+            --section-title-header-dark: #A78BFA;
+            --page-title-dark: #C4B5FD;
+            --card-bg-dark: rgba(23, 30, 42, 0.85);
+            --page-container-bg-dark: rgba(17, 24, 39, 0.95);
+            --sidebar-card-bg-dark: rgba(30, 41, 59, 0.85);
+            --card-border-dark: rgba(255,255,255,0.12);
+            --input-bg-dark: #374151;
+            --input-border-dark: #4b5563;
+            --input-text-dark: #f3f4f6;
+            --table-header-bg-dark: #4A0E6A;
+            --table-header-text-dark: #E9D5FF;
+            --table-border-dark: #374151;
+            --category-header-row-bg-dark: #4B0082; /* Indigo oscuro para encabezado de categoría en modo oscuro */
+            --category-header-row-text-dark: #E0B0FF; /* Lavanda claro para texto */
+            --button-tab-bg-dark: #374151;
+            --button-tab-text-dark: #d1d5db;
+            --button-tab-active-bg-dark: #2DD4BF;
+            --button-tab-active-text-dark: #064E3B;
+            --main-button-gradient-start-dark: #10B981;
+            --main-button-gradient-end-dark: #059669;
+            --main-button-text-dark: #f3f4f6;
+            --main-button-hover-gradient-start-dark: #059669;
+            --main-button-hover-gradient-end-dark: #047857;
+            --control-button-bg-dark: #3730A3;
+            --control-button-text-dark: #E0E7FF;
+            --control-button-hover-bg-dark: #4338CA;
+            --sidebar-label-bg-dark: #4F46E5;
+            --sidebar-label-text-dark: #C7D2FE;
+            --decorative-icon-color-dark: #8B5CF6;
+            background-color: var(--body-bg-dark); background-image: none; color: var(--text-color-dark);
+        }
+        body.dark-mode .floating-action-button {
+            background-color: var(--card-bg-dark); color: var(--text-color-dark);
+            border: 1px solid var(--card-border-dark);
+        }
+        body.dark-mode .floating-action-button:hover { background-color: var(--page-container-bg-dark); }
+        body.dark-mode .main-button {
+            background-image: linear-gradient(to bottom right, var(--main-button-gradient-start-dark), var(--main-button-gradient-end-dark));
+            color: var(--main-button-text-dark);
+        }
+        body.dark-mode .main-button:hover {
+            background-image: linear-gradient(to bottom right, var(--main-button-hover-gradient-start-dark), var(--main-button-hover-gradient-end-dark));
+        }
+        body.dark-mode .control-button { background-color: var(--control-button-bg-dark); color: var(--control-button-text-dark); }
+        body.dark-mode .control-button:hover { background-color: var(--control-button-hover-bg-dark); }
+        body.dark-mode .section-title-header { color: var(--section-title-header-dark); text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+        body.dark-mode .settings-button { color: var(--text-secondary-dark); }
+        body.dark-mode .settings-button:hover { background-color: rgba(75, 85, 99, 0.5); color: var(--text-color-dark); }
+        body.dark-mode .tab-button {
+            background-color: var(--button-tab-bg-dark); color: var(--button-tab-text-dark);
+            border-color: rgba(75, 85, 99, 0.6);
+        }
+        body.dark-mode .tab-button.active {
+            background-color: var(--button-tab-active-bg-dark); color: var(--button-tab-active-text-dark);
+            border-color: var(--button-tab-active-bg-dark);
+        }
+        body.dark-mode .content-card { background-color: var(--card-bg-dark); border: 1px solid var(--card-border-dark); }
+        body.dark-mode .sidebar-content-card { background-color: var(--sidebar-card-bg-dark); border: 1px solid var(--card-border-dark); }
+        body.dark-mode .sidebar-content-card h2.text-xl { color: #F9FAFB; }
+        body.dark-mode .sidebar-content-card .icon-container { background-color: rgba(55,65,81,0.8); border: 1px solid rgba(107,114,128,0.5); }
+        body.dark-mode .sidebar-content-card .icon-container i { color: var(--decorative-icon-color-dark); }
+        body.dark-mode .page-container { background-color: var(--page-container-bg-dark); border: 1px solid var(--card-border-dark); }
+        body.dark-mode .page-header { border-bottom-color: var(--table-border-dark); }
+        body.dark-mode .page-title { color: var(--page-title-dark); }
+        body.dark-mode .form-label { color: var(--text-secondary-dark); }
+        body.dark-mode #detalle-venta-page .form-label { color: #D1D5DB; }
+        body.dark-mode #detalle-venta-page label[for="detalle-venta-cliente"],
+        body.dark-mode #detalle-venta-page label[for="detalle-venta-direccion"] { color: #F3F4F6; }
+        body.dark-mode #detalle-venta-page #detalle-venta-fecha,
+        body.dark-mode #detalle-venta-page #detalle-venta-numero-nota { color: #FFFFFF; }
+        body.dark-mode #detalle-venta-page #detalle-venta-cliente,
+        body.dark-mode #detalle-venta-page #detalle-venta-direccion { color: #FFFFFF !important; background-color: #4B5563 !important; }
+        body.dark-mode #detalle-venta-page h3.text-md { color: #FFFFFF;}
+        body.dark-mode #venta-page .flex.justify-between.items-center.mb-1 > div:nth-child(2) { color: #FFFFFF; }
+        body.dark-mode .form-input, body.dark-mode .form-select {
+            background-color: var(--input-bg-dark); border-color: var(--input-border-dark); color: var(--input-text-dark);
+        }
+        body.dark-mode .form-input::placeholder { color: #6b7280; }
+        body.dark-mode .form-input[readonly] { background-color: #4b5563; color: #9ca3af; }
+        body.dark-mode .products-table th {
+            background-color: var(--table-header-bg-dark); color: var(--table-header-text-dark);
+            border-color: var(--table-border-dark);
+        }
+        body.dark-mode .products-table td { border-color: var(--table-border-dark); }
+        body.dark-mode .products-table td.category-header-row {
+            background-color: var(--category-header-row-bg-dark);
+            color: var(--category-header-row-text-dark);
+        }
+        body.dark-mode #detalle-venta-page #detalle-venta-table-body td:nth-child(2) { color: #FFFFFF; }
+        body.dark-mode .products-table td input[type="text"],
+        body.dark-mode .products-table td input[type="number"],
+        body.dark-mode .products-table td select {
+            background-color: var(--input-bg-dark); color: var(--input-text-dark); border-color: var(--input-border-dark);
+        }
+        body.dark-mode .products-table td input[readonly] { background-color: #374151; color: #9ca3af; border-color: #4b5563;}
+        body.dark-mode .venta-totals-container { border-top-color: var(--table-border-dark); }
+        body.dark-mode .venta-totals-container label, body.dark-mode .venta-totals-container span { color: var(--text-color-dark); }
+        body.dark-mode #venta-descuento { background-color: var(--input-bg-dark); color: var(--input-text-dark); border-color: var(--input-border-dark); }
+        body.dark-mode .nota-venta-numero { color: var(--text-secondary-dark); }
+        body.dark-mode .clear-search-btn { background-color: #4b5563; }
+        body.dark-mode .clear-search-btn:hover { background-color: #6b7280; }
+        body.dark-mode .action-button-print { background-color: #2563EB; } body.dark-mode .action-button-print:hover { background-color: #1D4ED8; }
+        body.dark-mode .action-button-save-sale { background-color: #15803D; } body.dark-mode .action-button-save-sale:hover { background-color: #166534; }
+        body.dark-mode .action-button-clear-sale { background-color: #EA580C; } body.dark-mode .action-button-clear-sale:hover { background-color: #C2410C; }
+        body.dark-mode .action-button-save { background-color: #059669; } body.dark-mode .action-button-save:hover { background-color: #047857; }
+        body.dark-mode .action-button-buy { background-color: #65A30D; } body.dark-mode .action-button-buy:hover { background-color: #4D7C0F; }
+        body.dark-mode .theme-switch-wrapper .fas { color: var(--text-secondary-dark); }
+        body.dark-mode .slider { background-color: #4b5563; }
+        body.dark-mode input:checked + .slider { background-color: #FDBA74; }
+        body.dark-mode .footer-guias { background-color: var(--footer-bg-dark); border-top: 1px solid var(--border-subtle-dark); }
+        body.dark-mode .sidebar-label { background-color: var(--sidebar-label-bg-dark); color: var(--sidebar-label-text-dark); }
+
+        @media print {
+            body, html {
+                margin: 0 !important; padding: 0 !important;
+                background-image: none !important; background-color: white !important;
+                padding-top: 0 !important; font-size: 8pt !important; line-height: 1.2 !important;
+            }
+            body.printing-venta-page > #app-container > *:not(#venta-page),
+            body.printing-detalle-page > #app-container > *:not(#detalle-venta-page),
+            body.printing-venta-page #category-pages-container,
+            body.printing-detalle-page #category-pages-container,
+            footer, .sidebar-content-card, .menu-bottom-controls,
+            #btn-add-venta-row, .page-actions, .no-print, #btn-add-new-category-footer,
+            .settings-button, #btn-mostrar-guias, #btn-ocultar-guias { display: none !important; }
+            .footer-guias { position: static !important; display: none !important;}
+            .main-content-wrapper, .page-container, .content-card {
+                box-shadow: none !important; border: none !important; padding: 0 !important;
+                margin: 0 !important; width: 100% !important; max-width: 100% !important;
+                backdrop-filter: none !important; background-color: white !important;
+                padding-top: 0 !important; margin-top: 0 !important;
+            }
+            body.printing-venta-page #venta-page,
+            body.printing-detalle-page #detalle-venta-page { display: block !important; padding-top: 0.1cm !important; margin: 0 !important; }
+            #venta-page .page-container, #detalle-venta-page .page-container {
+                padding: 0.1cm 0.3cm !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+            }
+            body.printing-venta-page #venta-page .page-header {
+                display: flex !important; justify-content: center !important; align-items: center !important;
+                margin-bottom: 0.3cm !important; padding-bottom: 0.1cm !important; border-bottom: 1px solid #bbb !important;
+            }
+            body.printing-venta-page #venta-page .page-header .page-title {
+                display: block !important; font-size: 11pt !important; font-weight: bold !important;
+                color: black !important; text-align: center !important;
+            }
+            .print-only-store-header { display: none; }
+            body.printing-detalle-page #detalle-venta-page .print-only-store-header {
+                display: block !important; text-align: center; font-size: 11pt !important;
+                font-weight: bold; margin-bottom: 0.3cm !important; color: black !important;
+            }
+            body.printing-detalle-page #detalle-venta-page .page-header { display: none !important; }
+            #venta-page, #venta-page *, #detalle-venta-page, #detalle-venta-page * {
+                color: black !important; background-color: transparent !important;
+                border-color: #ccc !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+            }
+            #venta-page .form-label, #venta-page #venta-fecha, #venta-page #nota-venta-numero-container,
+            #venta-page #nota-venta-numero, #venta-page .flex.justify-between.items-center.mb-1 > div:nth-child(2)
+            { font-size: 8pt !important; margin-bottom: 1px !important; padding: 1px 0 !important; }
+            #venta-page .products-table input, #venta-page #cliente, #venta-page #direccion, #venta-page #venta-descuento {
+                border: none !important; padding: 0px !important; box-shadow: none !important;
+                -webkit-appearance: none; -moz-appearance: none; appearance: none;
+                width: 100% !important; font-size: 8pt !important; background-color: white !important;
+            }
+             #venta-page .products-table th, #venta-page .products-table td { font-size: 7.5pt !important; padding: 1px 2px !important; }
+            #venta-page .venta-totals-container div { font-size: 8pt !important; margin-bottom: 0px !important; padding: 1px 0 !important; }
+             #venta-page .venta-totals-container label { margin-right: 3px !important;}
+             #venta-page .venta-totals-container hr { margin: 2px 0 !important; border-top-color: #ccc !important;}
+            #detalle-venta-page .form-label, #detalle-venta-page #detalle-venta-fecha, #detalle-venta-page #detalle-venta-hora,
+            #detalle-venta-page #detalle-venta-numero-nota, #detalle-venta-page #detalle-venta-cliente,
+            #detalle-venta-page #detalle-venta-direccion, #detalle-venta-page h3.text-md,
+            #detalle-venta-page .venta-totals-container label, #detalle-venta-page .venta-totals-container span,
+            #detalle-venta-page #detalle-venta-subtotal, #detalle-venta-page #detalle-venta-descuento,
+            #detalle-venta-page #detalle-venta-total-final {
+                font-size: 8pt !important; margin-bottom: 1px !important; padding: 1px 0 !important;
+            }
+             #detalle-venta-page #detalle-venta-cliente, #detalle-venta-page #detalle-venta-direccion {
+                background-color: #FFFFFF !important; border: 1px solid #ddd !important; padding: 1px 2px !important;
+            }
+            #detalle-venta-page .products-table th, #detalle-venta-page .products-table td { font-size: 7.5pt !important; padding: 1px 2px !important; }
+            #detalle-venta-page #detalle-venta-table-body td:nth-child(2) { font-weight: normal !important; }
+             #detalle-venta-page .venta-totals-container div { font-size: 8pt !important; margin-bottom: 0px !important; padding: 1px 0 !important; }
+             #detalle-venta-page .venta-totals-container label { margin-right: 3px !important;}
+             #detalle-venta-page .venta-totals-container hr { margin: 2px 0 !important; border-top-color: #ccc !important; }
+            .products-table th, .products-table td { border: 1px solid #ddd !important; }
+            .form-input[readonly] { color: black !important; background-color: transparent !important; border: none !important; }
+            .venta-totals-container { margin-top: 0.3rem !important; border-top: 1px solid #ccc !important; padding-top: 0.3rem !important; }
+            .hidden-on-print { display: none !important; }
+            #descuento-linea-total input#venta-descuento { display: inline-block !important; width: auto !important; text-align: right !important; }
+            #descuento-linea-total.hide-discount-on-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="p-0 md:p-0">
+    <div id="app-container">
+        <button id="header-back-to-menu-button" class="floating-action-button hidden no-print"> <i class="fas fa-bars"></i>
+            <span>MENU</span>
+        </button>
+        <button id="floating-back-button" class="floating-action-button hidden no-print"> <i class="fas fa-arrow-left"></i>
+            <span>ATRÁS</span>
+        </button>
+        <button id="btn-go-to-configuraciones" class="floating-action-button hidden no-print"> <i class="fas fa-cog"></i>
+            </button>
+
+
+        <main id="menu-page" class="main-content-wrapper px-4 md:px-6 pb-6">
+            <div class="main-content-grid">
+                <div class="left-panel">
+                    <i class="fas fa-star decorative-icon fa-beat" style="top: 10%; left: 5%; font-size: 1.8rem; animation-duration: 1.5s;"></i>
+                    <i class="fas fa-tag decorative-icon fa-bounce" style="bottom: 15%; right: 8%; font-size: 2rem; opacity: 0.5; animation-duration: 2s;"></i>
+                    <i class="fas fa-leaf decorative-icon fa-fade" style="top: 20%; right: 10%; font-size: 1.9rem; animation-duration: 3s; animation-delay: 0.5s;"></i>
+
+                    <div>
+                        <h1 class="section-title-header">Tienda el Huequito</h1>
+                        <div class="content-card mb-6">
+                             <i class="fas fa-shopping-basket decorative-icon fa-bounce" style="top: -20px; right: -20px; font-size: 2.2rem; opacity:0.7; animation-duration: 1.8s;"></i>
+                            <i class="fas fa-apple-whole decorative-icon fa-beat" style="bottom: -15px; left: -15px; font-size: 2rem; animation-duration: 1.2s; animation-delay: 0.3s;"></i>
+                            <div class="menu-actions-layout">
+                                <div class="button-container"><button class="main-button" id="btn-go-to-venta">VENTA</button></div>
+                                <div class="button-container"><button class="main-button" id="btn-go-to-productos">LISTA DE PRODUCTOS</button></div>
+                                <div class="button-container"><button class="main-button" id="btn-go-to-info-ventas">INFO. VENTAS</button></div>
+                                <div class="button-container"><button class="main-button" id="btn-go-to-buscador">BUSCADOR</button></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-bottom-controls">
+                        <div class="flex space-x-4 justify-center"> <button id="btn-mostrar-guias" class="control-button">MOSTRAR GUIAS</button>
+                            <button id="btn-ocultar-guias" class="control-button">OCULTAR GUIAS</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 md:p-6 pb-8 rounded-lg shadow-xl flex flex-col items-center space-y-4 h-full content-card sidebar-content-card no-print">
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 text-center">SISTEMA DE INVENTARIO</h2>
+                    <div class="icon-container rounded-full flex items-center justify-center overflow-hidden shadow-lg backdrop-blur-sm bg-white/80 dark:bg-gray-700/80 border border-gray-200/50 dark:border-gray-600/50">
+                        <i class="fas fa-boxes-stacked text-teal-600 dark:text-teal-400"></i>
+                    </div>
+                    <div class="image-container w-full max-w-xs bg-white/70 dark:bg-gray-700/70 rounded-xl flex items-center justify-center overflow-hidden shadow-lg backdrop-blur-sm border border-gray-200/50 dark:border-gray-600/50">
+                         <img src="https://www.expacioweb.com/wp-content/uploads/2019/01/27418.jpg" alt="Imagen de Negocio" class="object-contain h-full w-full rounded-md" onerror="this.src='https://placehold.co/280x160/cccccc/ffffff?text=Error+Imagen'">
+                    </div>
+                    <div class="sidebar-label w-full mt-auto">HOJA BASE</div>
+                </div>
+            </div>
+        </main>
+
+        <section id="venta-page" class="main-content-wrapper px-4 md:px-6 pt-4 pb-6 hidden">
+            <div class="page-container">
+                <div class="page-header"> <h2 class="page-title">COMERCIAL HUEQUITO</h2>
+                    </div>
+                <div class="flex justify-between items-center mb-1">
+                    <div><label class="form-label">FECHA: <span id="venta-fecha"></span></label></div>
+                    <div class="text-lg font-semibold text-gray-700 dark:text-gray-300">NOTA DE VENTA</div>
+                </div>
+                <div id="nota-venta-numero-container" class="nota-venta-numero">
+                    Nº <span id="nota-venta-numero">0001</span>
+                </div>
+
+                <div class="form-grid">
+                    <div><label for="cliente" class="form-label">CLIENTE:</label><input type="text" id="cliente" name="cliente" class="form-input"></div>
+                    <div><label for="direccion" class="form-label">DIRECCIÓN:</label><input type="text" id="direccion" name="direccion" class="form-input"></div>
+                </div>
+                <table class="products-table">
+                    <thead><tr><th style="width:15%;">CANTIDAD</th><th style="width:45%;">PRODUCTOS</th><th style="width:20%;">PRECIO/U</th><th style="width:20%;">IMPORTE</th></tr></thead>
+                    <tbody id="venta-table-body"></tbody>
+                </table>
+                <div class="flex justify-start mb-4 no-print">
+                     <button id="btn-add-venta-row" class="action-button bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 px-3">
+                        <i class="fas fa-plus"></i> Añadir Fila
+                    </button>
+                </div>
+
+                <div class="venta-totals-container">
+                    <div><label for="venta-subtotal">SUBTOTAL:</label><span id="venta-subtotal">S/. 0.00</span></div>
+                    <div id="descuento-linea-total">
+                        <label for="venta-descuento">DESCUENTO (-):</label>
+                        <input type="text" id="venta-descuento" class="form-input text-right" value="0.00"> </div>
+                    <hr class="w-full max-w-[350px] my-1 border-gray-300 dark:border-gray-600">
+                    <div><label for="venta-total-final" class="text-lg">TOTAL A PAGAR:</label><span id="venta-total-final" class="text-lg">S/. 0.00</span></div>
+                </div>
+
+                <div class="page-actions no-print">
+                    <button class="action-button action-button-print" id="btn-imprimir-venta">IMPRIMIR</button>
+                    <button class="action-button action-button-save-sale" id="btn-guardar-ver-registro">GUARDAR Y VER REGISTRO</button>
+                    <button class="action-button action-button-clear-sale" id="btn-limpiar-venta">LIMPIAR VENTA</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="productos-page" class="main-content-wrapper px-4 md:px-6 pt-4 pb-6 hidden">
+            <div class="page-container">
+                <div class="page-header">
+                    <h2 class="page-title">LISTA GENERAL DE PRODUCTOS</h2>
+                     </div>
+                <div class="mb-2 text-sm text-gray-600 dark:text-gray-400">
+                    <p>Esta lista muestra todos los productos registrados en el sistema. Para agregar, modificar o eliminar productos, diríjase a la sección de la categoría correspondiente usando las pestañas inferiores o los botones del menú.</p>
+                    </div>
+                <div class="overflow-x-auto">
+                    <table class="products-table w-full">
+                        <thead>
+                            <tr>
+                                <th>COD. PRODUCTO</th><th>PRODUCTO</th><th class="text-center">C.CANT.</th><th class="text-right">COSTO</th>
+                                <th class="text-right">IMPORTE T.</th><th class="text-center">COMPRA U.</th><th class="text-right">COSTO U.</th>
+                                <th class="text-center">M.G.</th>
+                                <th class="text-right">PRECIO DE VENTA</th><th>TIPO</th>
+                                </tr>
+                        </thead>
+                        <tbody id="lista-productos-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <template id="ingreso-producto-template">
+            <section class="main-content-wrapper px-4 md:px-6 pt-4 pb-6 hidden ingreso-page">
+                <div class="page-container">
+                    <div class="page-header">
+                        <h2 class="page-title">INGRESO DE PRODUCTOS: <span class="categoria-nombre"></span></h2>
+                    </div>
+                    <form class="form-ingreso-categoria">
+                        <input type="hidden" name="editing_product_index" id="editing_product_index" value="">
+                        <input type="hidden" name="cod_producto" class="form-input">
+
+                        <div class="form-status-message text-sm my-2 p-2 rounded-md hidden"></div> <div class="space-y-4">
+                            <div class="cod-producto-field-container grid grid-cols-1" style="display: none;">
+                                <div>
+                                    <label class="form-label">Cod. Producto:</label>
+                                    <input type="text" name="cod_producto_display_only" class="form-input" readonly>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1">
+                                <div>
+                                    <label class="form-label">Producto <span class="categoria-nombre-label"></span>:</label>
+                                    <input type="text" name="producto" class="form-input" required>
+                                    <span class="producto-error-message text-red-500 text-xs mt-1 hidden"></span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                                <div>
+                                    <label class="form-label">C. Cantidad:</label>
+                                    <input type="number" step="1" name="c_cantidad" class="form-input text-center">
+                                </div>
+                                <div>
+                                    <label class="form-label">Costo:</label>
+                                    <input type="text" name="costo" class="form-input text-right" readonly>
+                                </div>
+                                <div>
+                                    <label class="form-label">Importe Total:</label>
+                                    <input type="text" name="importe_total" class="form-input text-right">
+                                </div>
+                                <div>
+                                    <label class="form-label">Compra Unidades:</label>
+                                    <input type="number" step="1" name="compra_unidades" class="form-input text-center">
+                                </div>
+                                <div>
+                                    <label class="form-label">Costo Unitario:</label>
+                                    <input type="text" name="costo_unitario" class="form-input text-right" readonly>
+                                </div>
+                                <div>
+                                    <label class="form-label">M.G.:</label>
+                                    <input type="text" name="mg_porcentaje" class="form-input text-center" readonly>
+                                </div>
+                                <div>
+                                    <label class="form-label">Precio de Venta:</label>
+                                    <input type="text" name="venta_unitaria" class="form-input text-right">
+                                </div>
+                            </div>
+                            <input type="hidden" name="tipo_producto" class="tipo-producto-hidden-value">
+                        </div>
+
+                        <div class="page-actions">
+                            <button type="submit" class="action-button action-button-save"><i class="fas fa-save"></i> <span class="submit-button-text">AÑADIR PRODUCTO</span></button>
+                            <button type="button" class="action-button action-button-clear-sale btn-cancel-edit hidden"><i class="fas fa-times"></i> CANCELAR EDICIÓN</button>
+                            <button type="reset" class="action-button action-button-clear-sale btn-clear-form">LIMPIAR FORMULARIO</button>
+                        </div>
+                    </form>
+                    <div class="mt-6">
+                        <h3 class="text-lg font-semibold mb-2 text-gray-700 dark:text-gray-300">Productos <span class="categoria-nombre-tabla"></span> Actuales</h3>
+                        <div class="overflow-x-auto">
+                            <table class="products-table w-full">
+                                <thead><tr>
+                                    <th>COD. PRODUCTO</th>
+                                    <th>PRODUCTO</th>
+                                    <th class="text-center">C.CANT.</th>
+                                    <th class="text-right">COSTO</th>
+                                    <th class="text-right">IMPORTE T.</th>
+                                    <th class="text-center">COMPRA U.</th>
+                                    <th class="text-right">COSTO U.</th>
+                                    <th class="text-center">M.G.</th>
+                                    <th class="text-right">PRECIO DE VENTA</th>
+                                    <th>TIPO</th>
+                                    <th class="no-print">ACCIONES</th>
+                                </tr></thead>
+                                <tbody class="tabla-categoria-ingresados-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+
+        <div id="category-pages-container"></div>
+
+        <section id="buscador-page" class="main-content-wrapper px-4 md:px-6 pt-4 pb-6 hidden">
+            <div class="page-container">
+                <div class="page-header">
+                    <h2 class="page-title">BUSCADOR GENERAL DE PRODUCTOS</h2>
+                    </div>
+                <div class="search-controls-container mb-6 flex flex-col md:flex-row md:items-center gap-4">
+                    <div class="flex-shrink-0 w-full md:w-1/3">
+                        <label for="search-category-filter" class="form-label sr-only">Filtrar por Categoría:</label>
+                        <select id="search-category-filter" class="form-select w-full">
+                            <option value="all">Todas las categorías</option>
+                        </select>
+                    </div>
+                    <div class="flex-grow w-full md:w-2/3 flex items-center gap-2">
+                        <input type="text" id="search-input" class="form-input flex-grow" placeholder="Buscar por código o nombre del producto...">
+                        <button id="clear-search-btn" class="clear-search-btn" title="Limpiar búsqueda"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table id="search-results-table" class="products-table w-full">
+                        <thead>
+                            <tr>
+                                <th>COD.PRODUCTO</th>
+                                <th>PRODUCTO</th>
+                                <th class="text-right">PRECIO DE VENTA</th>
+                                <th>TIPO</th>
+                                <th class="text-center no-print">ACCIÓN</th>
+                            </tr>
+                        </thead>
+                        <tbody id="search-results-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="info-ventas-page" class="main-content-wrapper px-4 md:px-6 pt-4 pb-6 hidden">
+            <div class="page-container">
+                <div class="page-header">
+                    <h2 class="page-title">INFORMACIÓN DE VENTAS REALIZADAS</h2>
+                     </div>
+                <div class="overflow-x-auto">
+                    <table class="products-table w-full">
+                        <thead>
+                            <tr>
+                                <th>Nº NOTA</th>
+                                <th>FECHA</th>
+                                <th>HORA</th> <th>CLIENTE</th>
+                                <th class="text-right">TOTAL PAGADO</th>
+                                <th class="text-center no-print">ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody id="info-ventas-tbody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="detalle-venta-page" class="main-content-wrapper px-4 md:px-6 pt-4 pb-6 hidden">
+            <div class="page-container">
+                <div class="print-only-store-header">COMERCIAL HUEQUITO</div> <div class="page-header"> <h2 class="page-title">DETALLE DE NOTA DE VENTA</h2>
+                </div>
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <label class="form-label">FECHA:</label>
+                        <span id="detalle-venta-fecha" class="text-sm text-gray-700 dark:text-gray-300"></span>
+                        <span id="detalle-venta-hora" class="text-sm text-gray-700 dark:text-gray-300 ml-2"></span> </div>
+                    <div class="text-right">
+                        <label class="form-label">NOTA DE VENTA Nº:</label>
+                        <span id="detalle-venta-numero-nota" class="text-lg font-semibold text-gray-700 dark:text-gray-300"></span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-md border border-gray-200 dark:border-gray-600">
+                    <div>
+                        <label for="detalle-venta-cliente" class="form-label">CLIENTE:</label>
+                        <p id="detalle-venta-cliente" class="form-input bg-gray-100 dark:bg-gray-600 cursor-default"></p>
+                    </div>
+                    <div>
+                        <label for="detalle-venta-direccion" class="form-label">DIRECCIÓN:</label>
+                        <p id="detalle-venta-direccion" class="form-input bg-gray-100 dark:bg-gray-600 cursor-default"></p>
+                    </div>
+                </div>
+
+                <h3 class="text-md font-semibold mb-2 text-gray-700 dark:text-gray-300">Productos:</h3>
+                <div class="overflow-x-auto mb-4">
+                    <table class="products-table w-full">
+                        <thead>
+                            <tr>
+                                <th style="width:15%;" class="text-center">CANT.</th>
+                                <th style="width:45%;">PRODUCTO</th>
+                                <th style="width:20%;" class="text-right">PRECIO/U</th>
+                                <th style="width:20%;" class="text-right">IMPORTE</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detalle-venta-table-body">
+                            </tbody>
+                    </table>
+                </div>
+
+                <div class="venta-totals-container mt-4">
+                    <div><label>SUBTOTAL:</label><span id="detalle-venta-subtotal" class="font-semibold">S/. 0.00</span></div>
+                    <div><label>DESCUENTO (-):</label><span id="detalle-venta-descuento" class="font-semibold">S/. 0.00</span></div>
+                    <hr class="w-full max-w-[350px] my-1 border-gray-300 dark:border-gray-600">
+                    <div><label class="text-lg">TOTAL PAGADO:</label><span id="detalle-venta-total-final" class="text-lg font-bold">S/. 0.00</span></div>
+                </div>
+
+                <div class="page-actions no-print mt-6">
+                    <button class="action-button action-button-print" id="btn-imprimir-detalle-venta">IMPRIMIR DETALLE</button>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="configuraciones-page" class="main-content-wrapper px-4 md:px-6 pt-4 pb-6 hidden">
+            <div class="page-container">
+                <div class="page-header">
+                    <h2 class="page-title">CONFIGURACIONES</h2>
+                    </div>
+                <div class="content-card mb-6">
+                    <h3 class="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-200">Modo de Visualización</h3>
+                    <div class="theme-switch-wrapper flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-sun mr-2 text-yellow-500"></i>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Modo Claro</span>
+                        </div>
+                        <label class="theme-switch relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="theme-toggle-checkbox" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-500 peer-checked:bg-blue-500"></div>
+                        </label>
+                        <div class="flex items-center">
+                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300 ml-2">Modo Oscuro</span>
+                            <i class="fas fa-moon ml-2 text-indigo-500"></i>
+
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Selecciona tu tema preferido para la aplicación.</p>
+                </div>
+
+                <div class="content-card mb-6">
+                    <h3 class="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-200">Gestión de Hojas (Categorías)</h3>
+                     <button id="btn-editar-categorias" class="control-button bg-yellow-400 hover:bg-yellow-500 text-yellow-800 font-semibold w-full md:w-auto">
+                        <i class="fas fa-pencil-alt mr-2"></i>EDITAR
+                    </button>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Haz clic en "EDITAR" y luego ve a MENU para añadir o eliminar hojas (categorías) desde el pie de página.</p>
+                </div>
+
+                <div class="content-card">
+                    <h3 class="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-200">Gestión de Datos de Productos</h3>
+                     <div class="flex flex-col sm:flex-row gap-4">
+                        <input type="file" id="excel-file-input" class="hidden" accept=".xls,.xlsx">
+                        <button id="btn-actualizar-info-excel" class="action-button action-button-save flex-1">
+                            <i class="fas fa-file-excel mr-2"></i>Importar desde Excel
+                        </button>
+                        </div>
+                    <div id="excel-upload-status" class="mt-3 text-sm text-gray-600 dark:text-gray-400 max-h-40 overflow-y-auto border border-gray-300 dark:border-gray-600 p-2 rounded-md"></div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                        <strong>Importar:</strong> El archivo Excel debe tener hojas con nombres que coincidan con sus categorías.
+                        A partir de la fila 3, se leerán los datos de las columnas B (Producto) a I (Precio Venta).
+                        Los productos nuevos se añadirán; los existentes se actualizarán.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+
+    </div>
+    <footer id="footer-guias" class="shadow-top footer-guias no-print">
+        <div class="flex flex-wrap gap-2 items-center justify-center px-4 w-full"> </div>
+    </footer>
+
+    <script>
+        // --- DATOS INICIALES ---
+        const datosInicialesAbarrotes = [
+            { cod_producto: "A001", producto: "Aceite CIL de 1 litro", c_cantidad: "15", costo: "2.53", importe_total: "38.00", compra_unidades: "6", costo_unitario: "6.33", mg_porcentaje: "15.00", venta_unitaria: "44.00", tipo_producto: "Abarrotes" },
+            { cod_producto: "A002", producto: "Aceite COCINERO", c_cantidad: "0.5", costo: "95.00", importe_total: "47.50", compra_unidades: "12", costo_unitario: "3.96", mg_porcentaje: "1100.00", venta_unitaria: "47.50", tipo_producto: "Abarrotes" },
+        ];
+
+        let todosLosProductos = JSON.parse(localStorage.getItem('todosLosProductosDB'));
+
+        let categorias = JSON.parse(localStorage.getItem('categoriasDB')) || [
+            { id: "Abarrotes", nombre: "Abarrotes", prefijoCod: "A" },
+            { id: "Aseo", nombre: "Aseo", prefijoCod: "B" },
+            { id: "Especies", nombre: "Especies", prefijoCod: "C" },
+            { id: "Libreria", nombre: "Librería", prefijoCod: "D" },
+            { id: "Jugueteria", nombre: "Juguetería", prefijoCod: "E" }
+        ];
+         if (!localStorage.getItem('categoriasDB')) {
+            localStorage.setItem('categoriasDB', JSON.stringify(categorias));
+        }
+
+        if (!todosLosProductos || todosLosProductos.length === 0) {
+            const categoriaAbarrotes = categorias.find(c => c.id === "Abarrotes");
+            const prefijoAbarrotes = categoriaAbarrotes ? categoriaAbarrotes.prefijoCod : "A";
+
+            todosLosProductos = datosInicialesAbarrotes.map((prod, index) => {
+                const cCantidadNum = parseFloat(prod.c_cantidad) || 0;
+                const importeTotalNum = parseFloat(prod.importe_total) || 0;
+                const compraUnidadesNum = parseFloat(prod.compra_unidades) || 0;
+                const ventaUnitariaNum = parseFloat(prod.venta_unitaria) || 0;
+
+                const costoCalculado = cCantidadNum > 0 ? (importeTotalNum / cCantidadNum) : 0;
+                const costoUnitarioCalculado = compraUnidadesNum > 0 ? (importeTotalNum / compraUnidadesNum) : 0;
+
+                const ingresosTotales = ventaUnitariaNum * compraUnidadesNum;
+                const gananciaTotal = ingresosTotales - importeTotalNum;
+                const mgPorcentajeCalculado = importeTotalNum > 0 ? (gananciaTotal / importeTotalNum) * 100 : 0;
+
+                return {
+                    ...prod,
+                    cod_producto: `${prefijoAbarrotes}${(index + 1).toString().padStart(3, '0')}`,
+                    costo: String(costoCalculado.toFixed(2)),
+                    costo_unitario: String(costoUnitarioCalculado.toFixed(2)),
+                    mg_porcentaje: String(mgPorcentajeCalculado.toFixed(2))
+                }
+            });
+            localStorage.setItem('todosLosProductosDB', JSON.stringify(todosLosProductos));
+        }
+
+
+        let ventasGuardadas = JSON.parse(localStorage.getItem('ventasGuardadasDB')) || [];
+        let proximoNumeroNotaVenta = parseInt(localStorage.getItem('proximoNumeroNotaVentaDB')) || 1;
+
+        let editingProductIndex = null;
+
+        const categoryPagesContainer = document.getElementById('category-pages-container');
+        const ingresoProductoTemplate = document.getElementById('ingreso-producto-template');
+        let isEditModeActive = false;
+
+        // --- HELPER FUNCTIONS FOR FORMATTING AND PARSING ---
+        function parseInputNumber(value) {
+            if (value === null || typeof value === 'undefined') return 0; // Handle null/undefined inputs
+            if (typeof value !== 'string') value = String(value);
+            const cleanedValue = value.replace(/S\/\.\s*|\%|,/g, '');
+            const num = parseFloat(cleanedValue);
+            return isNaN(num) ? 0 : num;
+        }
+
+        function formatTwoDecimals(value) {
+            const num = parseInputNumber(value);
+            return num.toFixed(2);
+        }
+
+        function formatInteger(value) {
+            const num = parseFloat(String(value).replace(/S\/\.\s*|\%|,/g, ''));
+            if (isNaN(num)) {
+                return '0';
+            }
+            return String(Math.round(num));
+        }
+
+        function formatAsPeruCurrency(value) {
+            const num = parseInputNumber(value);
+            return `S/. ${num.toFixed(2)}`;
+        }
+        // --- END HELPER FUNCTIONS ---
+
+
+        function getNextCategoryPrefix(existingCategoriesArray) {
+            if (!existingCategoriesArray || existingCategoriesArray.length === 0) return "A";
+
+            const lastCategory = existingCategoriesArray[existingCategoriesArray.length - 1];
+            if (!lastCategory || !lastCategory.prefijoCod) {
+                let maxCharCode = 64; // ASCII for '@', right before 'A'
+                existingCategoriesArray.forEach(cat => {
+                    if (cat.prefijoCod && cat.prefijoCod.length === 1) {
+                        const charCode = cat.prefijoCod.charCodeAt(0);
+                        if (charCode > maxCharCode && charCode < 91) { // Ensure it's an uppercase letter
+                            maxCharCode = charCode;
+                        }
+                    }
+                });
+                 if (maxCharCode >= 90) { // ASCII for 'Z'
+                    alert("Se ha alcanzado el límite de prefijos de una sola letra (Z).");
+                    return "Z_ERROR";
+                }
+                return String.fromCharCode(maxCharCode + 1);
+            }
+
+            const lastCharCode = lastCategory.prefijoCod.charCodeAt(0);
+            if (lastCharCode >= 90) { // ASCII for 'Z'
+                alert("Se ha alcanzado el límite de prefijos de una sola letra (Z).");
+                return "Z_ERROR";
+            }
+            return String.fromCharCode(lastCharCode + 1);
+        }
+
+        // --- CALCULATIONS FOR PRODUCT FORM ---
+        function calcularCostoDesdeForm(form) {
+            const importeTotalInput = form.querySelector('input[name="importe_total"]');
+            const cCantidadInput = form.querySelector('input[name="c_cantidad"]');
+            const costoInput = form.querySelector('input[name="costo"]');
+
+            if (importeTotalInput && cCantidadInput && costoInput) {
+                const importeTotal = parseInputNumber(importeTotalInput.value);
+                const cCantidad = parseInputNumber(cCantidadInput.value);
+                let calculatedCost = 0;
+                if (cCantidad > 0) {
+                    calculatedCost = importeTotal / cCantidad;
+                }
+                costoInput.value = formatAsPeruCurrency(calculatedCost);
+            }
+        }
+
+        function calcularCostoUnitarioDesdeForm(form) {
+            const importeTotalInput = form.querySelector('input[name="importe_total"]');
+            const compraUnidadesInput = form.querySelector('input[name="compra_unidades"]');
+            const costoUnitarioInput = form.querySelector('input[name="costo_unitario"]');
+
+            if (importeTotalInput && compraUnidadesInput && costoUnitarioInput) {
+                const importeTotal = parseInputNumber(importeTotalInput.value);
+                const compraUnidades = parseInputNumber(compraUnidadesInput.value);
+                let calculatedUnitCost = 0;
+                if (compraUnidades > 0) {
+                    calculatedUnitCost = importeTotal / compraUnidades;
+                }
+                costoUnitarioInput.value = formatAsPeruCurrency(calculatedUnitCost);
+            }
+        }
+
+        function calcularMgPorcentajeDesdeForm(form) {
+            const ventaUnitariaInput = form.querySelector('input[name="venta_unitaria"]');
+            const compraUnidadesInput = form.querySelector('input[name="compra_unidades"]');
+            const importeTotalInput = form.querySelector('input[name="importe_total"]');
+            const mgPorcentajeInput = form.querySelector('input[name="mg_porcentaje"]');
+
+            if (ventaUnitariaInput && compraUnidadesInput && importeTotalInput && mgPorcentajeInput) {
+                const ventaUnitaria = parseInputNumber(ventaUnitariaInput.value);
+                const compraUnidades = parseInputNumber(compraUnidadesInput.value);
+                const importeTotal = parseInputNumber(importeTotalInput.value);
+
+                const ingresosTotales = ventaUnitaria * compraUnidades;
+                const gananciaTotal = ingresosTotales - importeTotal;
+                let mgPorcentaje = 0;
+
+                if (importeTotal > 0) {
+                    mgPorcentaje = (gananciaTotal / importeTotal) * 100;
+                } else if (ingresosTotales > 0 && importeTotal === 0) { // Handle case of free item sold
+                    mgPorcentaje = Infinity; // Or some other indicator for infinite margin
+                }
+                mgPorcentajeInput.value = isFinite(mgPorcentaje) ? formatTwoDecimals(mgPorcentaje) : "N/A"; // Display "N/A" for Infinity
+            }
+        }
+
+        function addNumericFormattingListeners(form) {
+            const fieldsToFormat = [
+                { name: 'c_cantidad', formatFunc: formatInteger, isCurrency: false, isInteger: true },
+                { name: 'importe_total', formatFunc: formatAsPeruCurrency, isCurrency: true, isInteger: false },
+                { name: 'compra_unidades', formatFunc: formatInteger, isCurrency: false, isInteger: true },
+                { name: 'venta_unitaria', formatFunc: formatAsPeruCurrency, isCurrency: true, isInteger: false }
+            ];
+
+            fieldsToFormat.forEach(field => {
+                const input = form.querySelector(`input[name="${field.name}"]`);
+                if (input) {
+                    input.addEventListener('focus', function() {
+                        // Al enfocar, mostrar el número sin formato de moneda para facilitar la edición
+                        if (!field.isCurrency) {
+                             this.value = String(parseInputNumber(this.value)); // Mantener como string para enteros
+                        } else {
+                            this.value = parseInputNumber(this.value); // Convertir a número para decimales
+                        }
+                    });
+                    input.addEventListener('blur', function() {
+                        // Al perder el foco, aplicar el formato
+                        this.value = field.formatFunc(this.value);
+                    });
+                }
+            });
+        }
+
+        // --- DYNAMIC PAGE AND FORM GENERATION ---
+        function generarPaginasCategorias() {
+            categoryPagesContainer.innerHTML = ''; // Limpiar páginas existentes
+            allCategoryPageElements = {}; // Resetear el objeto de elementos de página
+            categorias.forEach(cat => {
+                const pageNode = ingresoProductoTemplate.content.cloneNode(true);
+                const section = pageNode.querySelector('section');
+                section.id = `${cat.id.toLowerCase()}-ingreso-page`;
+                section.classList.add('flex-grow');
+                section.querySelector('.categoria-nombre').textContent = cat.nombre.toUpperCase();
+                section.querySelector('.categoria-nombre-label').textContent = cat.nombre;
+                section.querySelector('.categoria-nombre-tabla').textContent = cat.nombre;
+                section.querySelector('.tipo-producto-hidden-value').value = cat.nombre;
+
+                const form = section.querySelector('.form-ingreso-categoria');
+                form.id = `form-ingreso-${cat.id.toLowerCase()}`;
+                form.dataset.categoryId = cat.id;
+
+                const codProductoFieldContainer = section.querySelector('.cod-producto-field-container');
+
+                const importeTotalInput = form.querySelector('input[name="importe_total"]');
+                const cCantidadInput = form.querySelector('input[name="c_cantidad"]');
+                const compraUnidadesInput = form.querySelector('input[name="compra_unidades"]');
+                const ventaUnitariaInput = form.querySelector('input[name="venta_unitaria"]');
+
+                const updateCalculatedFields = () => {
+                    calcularCostoDesdeForm(form);
+                    calcularCostoUnitarioDesdeForm(form);
+                    calcularMgPorcentajeDesdeForm(form);
+                };
+
+                if(importeTotalInput) importeTotalInput.addEventListener('input', updateCalculatedFields);
+                if(cCantidadInput) cCantidadInput.addEventListener('input', updateCalculatedFields);
+                if(compraUnidadesInput) compraUnidadesInput.addEventListener('input', updateCalculatedFields);
+                if(ventaUnitariaInput) ventaUnitariaInput.addEventListener('input', updateCalculatedFields);
+
+                addNumericFormattingListeners(form);
+
+                section.querySelector('.tabla-categoria-ingresados-body').id = `tabla-${cat.id.toLowerCase()}-ingresados-body`;
+
+                const btnCancelEdit = section.querySelector('.btn-cancel-edit');
+                btnCancelEdit.addEventListener('click', () => {
+                    resetProductForm(form);
+                    const activeTabButton = footerGuias.querySelector('.tab-button.active');
+                    if (activeTabButton && activeTabButton.dataset.pageCategory === cat.id) {
+                        // Stay on this page or specific logic
+                    } else {
+                        showPage(menuPage);
+                    }
+                });
+
+                const btnClearForm = section.querySelector('.btn-clear-form');
+                btnClearForm.addEventListener('click', () => {
+                    resetProductForm(form, true);
+                });
+
+                categoryPagesContainer.appendChild(pageNode);
+                allCategoryPageElements[`${cat.id.toLowerCase()}IngresoPage`] = section;
+                addFormSubmitListener(form, cat);
+            });
+            allPages = [menuPage, ventaPage, productosPage, buscadorPage, infoVentasPage, detalleVentaPage, configuracionesPage, ...Object.values(allCategoryPageElements)];
+        }
+
+        function resetProductForm(formElement, forceClear = false) {
+            if (!formElement) return;
+            formElement.reset();
+            formElement.querySelector('input[name="editing_product_index"]').value = '';
+            formElement.querySelector('.submit-button-text').textContent = 'AÑADIR PRODUCTO';
+            formElement.querySelector('.btn-cancel-edit').classList.add('hidden');
+
+            formElement.querySelector('input[name="costo"]').value = formatAsPeruCurrency(0);
+            formElement.querySelector('input[name="costo_unitario"]').value = formatAsPeruCurrency(0);
+            formElement.querySelector('input[name="mg_porcentaje"]').value = formatTwoDecimals(0);
+
+            const codProductoDisplayContainer = formElement.querySelector('.cod-producto-field-container');
+            if (codProductoDisplayContainer) {
+                codProductoDisplayContainer.style.display = 'none';
+            }
+            formElement.querySelector('input[name="cod_producto_display_only"]').value = '';
+
+            // Limpiar mensajes de error/éxito
+            const productoErrorSpan = formElement.querySelector('.producto-error-message');
+            const formStatusDiv = formElement.querySelector('.form-status-message');
+            if (productoErrorSpan) productoErrorSpan.classList.add('hidden');
+            if (formStatusDiv) formStatusDiv.classList.add('hidden');
+
+
+            editingProductIndex = null;
+
+            if (forceClear) {
+                 Array.from(formElement.elements).forEach(el => {
+                    if (el.type !== 'submit' && el.type !== 'button' && el.type !== 'reset' && el.type !== 'hidden' && el.name !== 'cod_producto' && el.name !== 'cod_producto_display_only') {
+                        if (el.name === 'importe_total' || el.name === 'venta_unitaria') {
+                            el.value = formatAsPeruCurrency(0);
+                        } else if (el.name === 'c_cantidad' || el.name === 'compra_unidades') {
+                            el.value = formatInteger(0);
+                        } else if (el.name !== 'costo' && el.name !== 'costo_unitario' && el.name !== 'mg_porcentaje') {
+                            el.value = '';
+                        }
+                    }
+                 });
+                 formElement.querySelector('input[name="costo"]').value = formatAsPeruCurrency(0);
+                 formElement.querySelector('input[name="costo_unitario"]').value = formatAsPeruCurrency(0);
+                 formElement.querySelector('input[name="mg_porcentaje"]').value = formatTwoDecimals(0);
+            }
+        }
+
+        function addFormSubmitListener(form, cat) {
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const formData = new FormData(form);
+                    const productoDataRaw = Object.fromEntries(formData.entries());
+                    const productoData = {};
+                    const currentEditingIndexValue = form.querySelector('input[name="editing_product_index"]').value;
+
+                    const productoErrorSpan = form.querySelector('.producto-error-message');
+                    const formStatusDiv = form.querySelector('.form-status-message');
+
+                    // Limpiar mensajes previos
+                    if (productoErrorSpan) {
+                        productoErrorSpan.textContent = '';
+                        productoErrorSpan.classList.add('hidden');
+                    }
+                    if (formStatusDiv) {
+                        formStatusDiv.textContent = '';
+                        formStatusDiv.classList.add('hidden');
+                    }
+
+
+                    productoData.producto = (productoDataRaw.producto || "").trim();
+                    if (!productoData.producto) {
+                        if (productoErrorSpan) {
+                            productoErrorSpan.textContent = 'El nombre del producto es obligatorio.';
+                            productoErrorSpan.classList.remove('hidden');
+                        }
+                        if (formStatusDiv) {
+                            formStatusDiv.textContent = 'Por favor, ingrese el nombre del producto.';
+                            formStatusDiv.className = 'form-status-message text-sm my-2 p-2 rounded-md bg-red-100 text-red-700 border border-red-300';
+                            formStatusDiv.classList.remove('hidden');
+                        }
+                        return;
+                    }
+
+                    productoData.c_cantidad = String(Math.round(parseInputNumber(productoDataRaw.c_cantidad)));
+                    productoData.importe_total = String(parseInputNumber(productoDataRaw.importe_total).toFixed(2));
+                    productoData.compra_unidades = String(Math.round(parseInputNumber(productoDataRaw.compra_unidades)));
+                    productoData.venta_unitaria = String(parseInputNumber(productoDataRaw.venta_unitaria).toFixed(2));
+                    productoData.tipo_producto = productoDataRaw.tipo_producto;
+
+                    productoData.costo = String(parseInputNumber(form.querySelector('input[name="costo"]').value).toFixed(2));
+                    productoData.costo_unitario = String(parseInputNumber(form.querySelector('input[name="costo_unitario"]').value).toFixed(2));
+                    productoData.mg_porcentaje = String(parseInputNumber(form.querySelector('input[name="mg_porcentaje"]').value).toFixed(2));
+
+
+                    if (currentEditingIndexValue === "") {
+                        if (todosLosProductos.some(p => p.tipo_producto === cat.nombre && normalizeNameForMatching(p.producto) === normalizeNameForMatching(productoData.producto))) {
+                            if (formStatusDiv) {
+                                formStatusDiv.textContent = `Error: Ya existe un producto con el nombre "${productoData.producto}" en la categoría ${cat.nombre}.`;
+                                formStatusDiv.className = 'form-status-message text-sm my-2 p-2 rounded-md bg-red-100 text-red-700 border border-red-300';
+                                formStatusDiv.classList.remove('hidden');
+                            }
+                            return;
+                        }
+
+                        const prefijo = cat.prefijoCod;
+                        if (!prefijo) {
+                            alert(`Error: La categoría ${cat.nombre} no tiene un prefijo definido.`); // Mantener alerta para errores críticos del sistema
+                            return;
+                        }
+                        let nextNum = 1;
+                        const productsInThisCategory = todosLosProductos.filter(p =>
+                            p.tipo_producto === cat.nombre &&
+                            p.cod_producto &&
+                            p.cod_producto.startsWith(prefijo)
+                        );
+                         if (productsInThisCategory.length > 0) {
+                            const existingNums = productsInThisCategory.map(p => {
+                                const numPart = p.cod_producto.substring(prefijo.length);
+                                return parseInt(numPart, 10);
+                            }).filter(n => !isNaN(n));
+                            if(existingNums.length > 0) {
+                                nextNum = Math.max(...existingNums) + 1;
+                            }
+                        }
+                        productoData.cod_producto = `${prefijo}${nextNum.toString().padStart(3, '0')}`;
+
+                        if (todosLosProductos.some(p => p.cod_producto === productoData.cod_producto)) {
+                             alert(`Error: El código de producto generado automáticamente '${productoData.cod_producto}' ya existe. Intente de nuevo o revise los códigos existentes.`);
+                             return;
+                        }
+                        todosLosProductos.push(productoData);
+                        localStorage.setItem('todosLosProductosDB', JSON.stringify(todosLosProductos));
+
+                        if (formStatusDiv) {
+                            formStatusDiv.textContent = `Producto "${productoData.producto}" añadido exitosamente.`;
+                            formStatusDiv.className = 'form-status-message text-sm my-2 p-2 rounded-md bg-green-100 text-green-700 border border-green-300';
+                            formStatusDiv.classList.remove('hidden');
+                            setTimeout(() => { formStatusDiv.classList.add('hidden'); }, 3000);
+                        }
+                        resetProductForm(form, true);
+
+                    } else {
+                        const indexToUpdate = parseInt(currentEditingIndexValue);
+                        const originalProduct = todosLosProductos[indexToUpdate];
+
+                        if (normalizeNameForMatching(originalProduct.producto) !== normalizeNameForMatching(productoData.producto)) {
+                            if (todosLosProductos.some((p, idx) =>
+                                idx !== indexToUpdate &&
+                                p.tipo_producto === cat.nombre &&
+                                normalizeNameForMatching(p.producto) === normalizeNameForMatching(productoData.producto)
+                            )) {
+                                if (formStatusDiv) {
+                                    formStatusDiv.textContent = `Error: Ya existe otro producto con el nombre "${productoData.producto}" en la categoría ${cat.nombre}.`;
+                                    formStatusDiv.className = 'form-status-message text-sm my-2 p-2 rounded-md bg-red-100 text-red-700 border border-red-300';
+                                    formStatusDiv.classList.remove('hidden');
+                                }
+                                return;
+                            }
+                        }
+
+                        const updatedProduct = {
+                            ...originalProduct,
+                            ...productoData,
+                            cod_producto: originalProduct.cod_producto
+                        };
+
+                        todosLosProductos[indexToUpdate] = updatedProduct;
+                        localStorage.setItem('todosLosProductosDB', JSON.stringify(todosLosProductos));
+                        if (formStatusDiv) {
+                            formStatusDiv.textContent = `Producto "${updatedProduct.producto}" actualizado exitosamente.`;
+                            formStatusDiv.className = 'form-status-message text-sm my-2 p-2 rounded-md bg-green-100 text-green-700 border border-green-300';
+                            formStatusDiv.classList.remove('hidden');
+                            setTimeout(() => { formStatusDiv.classList.add('hidden'); }, 3000);
+                        }
+                        resetProductForm(form);
+                    }
+
+                    renderTablaCategoriaIngresados(cat.nombre);
+                    renderListaProductos();
+                });
+            }
+        }
+
+        function populateProductFormForEdit(productIndex, categoryId) {
+            const product = todosLosProductos[productIndex];
+            if (!product) return;
+            const category = categorias.find(c => c.id === categoryId);
+            if (!category) {
+                alert(`Error: Categoría con ID '${categoryId}' no encontrada.`);
+                return;
+            }
+
+            const categoryPageId = `${category.id.toLowerCase()}-ingreso-page`;
+            const categoryPage = document.getElementById(categoryPageId);
+            if (!categoryPage) return;
+
+            const form = categoryPage.querySelector('.form-ingreso-categoria');
+            if (!form) return;
+
+            // Limpiar mensajes de error/éxito del formulario antes de poblarlo
+            const productoErrorSpan = form.querySelector('.producto-error-message');
+            const formStatusDiv = form.querySelector('.form-status-message');
+            if (productoErrorSpan) productoErrorSpan.classList.add('hidden');
+            if (formStatusDiv) formStatusDiv.classList.add('hidden');
+
+
+            editingProductIndex = productIndex;
+
+            form.querySelector('input[name="editing_product_index"]').value = productIndex;
+
+            const codProductoDisplayContainer = form.querySelector('.cod-producto-field-container');
+            const codProductoDisplayInput = form.querySelector('input[name="cod_producto_display_only"]');
+            if (codProductoDisplayContainer && codProductoDisplayInput) {
+                codProductoDisplayInput.value = product.cod_producto || '';
+                codProductoDisplayContainer.style.display = 'grid';
+            }
+
+            form.querySelector('input[name="producto"]').value = product.producto || '';
+            form.querySelector('input[name="c_cantidad"]').value = formatInteger(product.c_cantidad || 0);
+            form.querySelector('input[name="importe_total"]').value = formatAsPeruCurrency(product.importe_total || 0);
+            form.querySelector('input[name="compra_unidades"]').value = formatInteger(product.compra_unidades || 0);
+            form.querySelector('input[name="venta_unitaria"]').value = formatAsPeruCurrency(product.venta_unitaria || 0);
+            form.querySelector('input[name="tipo_producto"]').value = product.tipo_producto || category.nombre;
+
+            calcularCostoDesdeForm(form);
+            calcularCostoUnitarioDesdeForm(form);
+            calcularMgPorcentajeDesdeForm(form);
+
+            form.querySelector('.submit-button-text').textContent = 'GUARDAR CAMBIOS';
+            form.querySelector('.btn-cancel-edit').classList.remove('hidden');
+
+            showPage(categoryPage);
+        }
+
+        // --- DOM ELEMENT REFERENCES ---
+        const menuPage = document.getElementById('menu-page');
+        const ventaPage = document.getElementById('venta-page');
+        const productosPage = document.getElementById('productos-page');
+        const buscadorPage = document.getElementById('buscador-page');
+        const infoVentasPage = document.getElementById('info-ventas-page');
+        const configuracionesPage = document.getElementById('configuraciones-page');
+        const detalleVentaPage = document.getElementById('detalle-venta-page');
+        const footerGuias = document.getElementById('footer-guias');
+        let allCategoryPageElements = {};
+
+        const btnGoToVenta = document.getElementById('btn-go-to-venta');
+        const btnGoToProductos = document.getElementById('btn-go-to-productos');
+        const btnGoToBuscador = document.getElementById('btn-go-to-buscador');
+        const btnGoToInfoVentas = document.getElementById('btn-go-to-info-ventas');
+
+        const headerBackToMenuButton = document.getElementById('header-back-to-menu-button');
+        const floatingBackButton = document.getElementById('floating-back-button');
+        const btnGoToConfiguraciones = document.getElementById('btn-go-to-configuraciones');
+
+        const btnEditarCategorias = document.getElementById('btn-editar-categorias');
+        const btnActualizarInfoExcel = document.getElementById('btn-actualizar-info-excel');
+        const excelFileInput = document.getElementById('excel-file-input'); // Para importar
+        const selectExcelForUpdateInput = document.getElementById('select-excel-for-update-input'); // Para actualizar/exportar
+        const excelUploadStatus = document.getElementById('excel-upload-status');
+        const btnExportAllExcel = document.getElementById('btn-export-all-excel');
+
+        const btnMostrarGuias = document.getElementById('btn-mostrar-guias');
+        const btnOcultarGuias = document.getElementById('btn-ocultar-guias');
+        const searchCategoryFilter = document.getElementById('search-category-filter');
+        const themeToggleCheckbox = document.getElementById('theme-toggle-checkbox');
+
+        let allPages = [];
+
+        // --- UI RENDERING AND NAVIGATION ---
+        function populateSearchCategoryFilter() {
+            if (!searchCategoryFilter) return;
+            const allOption = searchCategoryFilter.querySelector('option[value="all"]');
+            searchCategoryFilter.innerHTML = '';
+            if (allOption) searchCategoryFilter.appendChild(allOption);
+
+            categorias.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat.nombre;
+                option.textContent = cat.nombre;
+                searchCategoryFilter.appendChild(option);
+            });
+        }
+
+
+        function showPage(pageToShow) {
+            allPages.forEach(page => { if (page) page.classList.add('hidden'); });
+
+            const allFooterTabs = footerGuias.querySelectorAll('.tab-button');
+            allFooterTabs.forEach(t => t.classList.remove('active'));
+
+            if (pageToShow) {
+                pageToShow.classList.remove('hidden');
+                window.scrollTo(0, 0);
+
+                if (headerBackToMenuButton && floatingBackButton && btnGoToConfiguraciones) {
+                    if (pageToShow.id === 'menu-page') {
+                        headerBackToMenuButton.classList.add('hidden');
+                        floatingBackButton.classList.add('hidden');
+                        btnGoToConfiguraciones.classList.remove('hidden');
+                    } else if (pageToShow.id === 'detalle-venta-page') {
+                        headerBackToMenuButton.classList.add('hidden');
+                        floatingBackButton.classList.remove('hidden');
+                        btnGoToConfiguraciones.classList.add('hidden');
+                    } else {
+                        headerBackToMenuButton.classList.remove('hidden');
+                        floatingBackButton.classList.add('hidden');
+                        btnGoToConfiguraciones.classList.add('hidden');
+                    }
+                }
+
+                if (btnEditarCategorias) {
+                    if (pageToShow.id === 'configuraciones-page') {
+                        btnEditarCategorias.classList.remove('hidden');
+                    } else {
+                        btnEditarCategorias.classList.add('hidden');
+                    }
+                }
+
+                if (isEditModeActive && pageToShow.id !== 'menu-page' && pageToShow.id !== 'configuraciones-page') {
+                    // Consider deactivating edit mode here or handle differently
+                }
+
+                const pageIdToMatch = pageToShow.id.endsWith('-ingreso-page') ?
+                                    pageToShow.id.replace('-ingreso-page', '').toLowerCase() :
+                                    (pageToShow.id === 'detalle-venta-page' ? 'info-ventas-page' : pageToShow.id);
+                const correspondingFooterTab = Array.from(allFooterTabs).find(t =>
+                    t.dataset.page === pageIdToMatch ||
+                    (t.dataset.pageCategory && t.dataset.pageCategory.toLowerCase() === pageIdToMatch.replace('-ingreso-page',''))
+                );
+
+                if (correspondingFooterTab) {
+                    correspondingFooterTab.classList.add('active');
+                }
+
+                if (editingProductIndex !== null && !pageToShow.classList.contains('ingreso-page') && pageToShow.id !== 'detalle-venta-page') {
+                    const productBeingEdited = todosLosProductos[editingProductIndex];
+                    if (productBeingEdited) {
+                        const categoryOfProduct = categorias.find(c => c.nombre === productBeingEdited.tipo_producto);
+                        if (categoryOfProduct) {
+                             const formToReset = document.getElementById(`form-ingreso-${categoryOfProduct.id.toLowerCase()}`);
+                           if(formToReset) resetProductForm(formToReset);
+                        }
+                    }
+                }
+
+                if (pageToShow.id === 'productos-page') renderListaProductos();
+                if (pageToShow.id === 'venta-page') {
+                    const ahora = new Date();
+                    if(document.getElementById('venta-fecha')) document.getElementById('venta-fecha').textContent = ahora.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                    if(document.getElementById('nota-venta-numero')) document.getElementById('nota-venta-numero').textContent = formatNumeroNota(proximoNumeroNotaVenta);
+                }
+                if (pageToShow.id === 'buscador-page') {
+                    populateSearchCategoryFilter();
+                    document.getElementById('search-input').value = '';
+                    if(searchCategoryFilter) searchCategoryFilter.value = 'all';
+                    performSearch();
+                }
+                if (pageToShow.id === 'info-ventas-page') renderInfoVentas();
+
+                const categoriaMatch = pageToShow.id.match(/(\w+)-ingreso-page/);
+                if (categoriaMatch) {
+                    const categoriaIdFromPage = categoriaMatch[1];
+                    const categoriaActual = categorias.find(c => c.id.toLowerCase() === categoriaIdFromPage);
+                    if (categoriaActual) {
+                         renderTablaCategoriaIngresados(categoriaActual.nombre);
+                         const form = document.getElementById(`form-ingreso-${categoriaActual.id.toLowerCase()}`);
+                         if(form && form.querySelector('input[name="editing_product_index"]').value === "") {
+                            resetProductForm(form, true);
+                         } else if (form && form.querySelector('input[name="editing_product_index"]').value !== "") {
+                            calcularCostoDesdeForm(form);
+                            calcularCostoUnitarioDesdeForm(form);
+                            calcularMgPorcentajeDesdeForm(form);
+                         }
+                         const categoryFooterTab = Array.from(allFooterTabs).find(t => t.dataset.pageCategory && t.dataset.pageCategory.toLowerCase() === categoriaIdFromPage);
+                         if(categoryFooterTab) categoryFooterTab.classList.add('active');
+                    }
+                }
+            }
+             renderFooterTabs();
+        }
+
+        if (btnGoToVenta) btnGoToVenta.addEventListener('click', () => showPage(ventaPage));
+        if (btnGoToProductos) btnGoToProductos.addEventListener('click', () => showPage(productosPage));
+        if (btnGoToBuscador) btnGoToBuscador.addEventListener('click', () => showPage(buscadorPage));
+        if (btnGoToInfoVentas) btnGoToInfoVentas.addEventListener('click', () => showPage(infoVentasPage));
+
+        if (headerBackToMenuButton) headerBackToMenuButton.addEventListener('click', () => showPage(menuPage));
+        if (floatingBackButton) floatingBackButton.addEventListener('click', () => showPage(infoVentasPage));
+        if (btnGoToConfiguraciones) btnGoToConfiguraciones.addEventListener('click', () => showPage(configuracionesPage));
+
+        if(btnMostrarGuias && footerGuias) btnMostrarGuias.addEventListener('click', () => footerGuias.classList.remove('hidden'));
+        if(btnOcultarGuias && footerGuias) btnOcultarGuias.addEventListener('click', () => footerGuias.classList.add('hidden'));
+
+        if (btnEditarCategorias) {
+            btnEditarCategorias.addEventListener('click', toggleEditMode);
+        }
+
+        function toggleEditMode() {
+            isEditModeActive = !isEditModeActive;
+            document.body.classList.toggle('edit-mode-active', isEditModeActive);
+
+            if (btnEditarCategorias) {
+                if (isEditModeActive) {
+                    btnEditarCategorias.innerHTML = '<i class="fas fa-check mr-2"></i>FINALIZAR EDICIÓN';
+                    btnEditarCategorias.classList.remove('bg-yellow-400', 'hover:bg-yellow-500', 'text-yellow-800');
+                    btnEditarCategorias.classList.add('bg-green-500', 'hover:bg-green-600', 'text-white');
+
+                    const currentPage = Array.from(allPages).find(p => p && !p.classList.contains('hidden'));
+                    if (!currentPage || currentPage.id !== 'menu-page') {
+                         showPage(menuPage);
+                    } else {
+                        renderFooterTabs();
+                    }
+                } else {
+                    btnEditarCategorias.innerHTML = '<i class="fas fa-pencil-alt mr-2"></i>EDITAR';
+                    btnEditarCategorias.classList.add('bg-yellow-400', 'hover:bg-yellow-500', 'text-yellow-800');
+                    btnEditarCategorias.classList.remove('bg-green-500', 'hover:bg-green-600', 'text-white');
+                    renderFooterTabs();
+                }
+            } else {
+                renderFooterTabs();
+            }
+        }
+
+
+        function renderFooterTabs() {
+            const footerContainer = footerGuias.querySelector('div');
+            footerContainer.innerHTML = '';
+
+            const defaultTabs = [
+                { text: 'MENU', page: 'menu-page' },
+                { text: 'VENTA', page: 'venta-page' },
+                { text: 'PRODUCTOS', page: 'productos-page' },
+                { text: 'INFO. VENTAS', page: 'info-ventas-page' },
+                { text: 'BUSCADOR', page: 'buscador-page' }
+            ];
+
+            defaultTabs.forEach(tabInfo => {
+                const button = document.createElement('button');
+                button.className = 'tab-button';
+                button.textContent = tabInfo.text;
+                button.dataset.page = tabInfo.page;
+                button.addEventListener('click', handleFooterTabClick);
+                footerContainer.appendChild(button);
+            });
+
+            categorias.forEach(cat => {
+                const button = document.createElement('button');
+                button.className = 'tab-button';
+                button.dataset.pageCategory = cat.id;
+
+                const tabText = document.createElement('span');
+                tabText.textContent = cat.nombre;
+                button.appendChild(tabText);
+
+                if (isEditModeActive) {
+                    const deleteX = document.createElement('span');
+                    deleteX.textContent = 'x';
+                    deleteX.className = 'delete-category-x';
+                    deleteX.title = `Eliminar categoría ${cat.nombre}`;
+                    deleteX.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        handleDeleteCategory(cat.id, cat.nombre);
+                    });
+                    button.appendChild(deleteX);
+                }
+
+                button.addEventListener('click', handleFooterTabClick);
+                footerContainer.appendChild(button);
+            });
+
+            const addButton = document.createElement('button');
+            addButton.className = 'tab-button';
+            addButton.textContent = '+';
+            addButton.id = 'btn-add-new-category-footer';
+            addButton.title = 'Añadir nueva categoría';
+            addButton.addEventListener('click', addNewCategoryPrompt);
+            footerContainer.appendChild(addButton);
+
+            const currentPageElement = Array.from(allPages).find(p => p && !p.classList.contains('hidden'));
+            if (currentPageElement) {
+                let activeTab;
+                const pageId = currentPageElement.id;
+                const pageIdToMatchForTab = pageId === 'detalle-venta-page' ? 'info-ventas-page' : pageId;
+
+
+                if (pageIdToMatchForTab.endsWith('-ingreso-page')) {
+                    const categoryIdFromPage = pageIdToMatchForTab.replace('-ingreso-page', '');
+                    const categoryObject = categorias.find(c => c.id.toLowerCase() === categoryIdFromPage);
+                    if (categoryObject) {
+                       activeTab = footerContainer.querySelector(`.tab-button[data-page-category="${categoryObject.id}"]`);
+                    }
+                } else {
+                    activeTab = footerContainer.querySelector(`.tab-button[data-page="${pageIdToMatchForTab}"]`);
+                }
+                if (activeTab) activeTab.classList.add('active');
+            } else if (menuPage && !menuPage.classList.contains('hidden')) {
+                 const menuTab = footerContainer.querySelector('.tab-button[data-page="menu-page"]');
+                 if(menuTab) menuTab.classList.add('active');
+            }
+        }
+
+        function handleFooterTabClick(event) {
+            const buttonClicked = event.target.closest('.tab-button');
+            if (!buttonClicked) return;
+
+            const targetPageId = buttonClicked.dataset.page;
+            const targetPageCategoryId = buttonClicked.dataset.pageCategory;
+
+            if (targetPageId) {
+                const targetPage = document.getElementById(targetPageId);
+                if (targetPage) showPage(targetPage);
+            } else if (targetPageCategoryId) {
+                const pageIdForCategory = `${targetPageCategoryId.toLowerCase()}-ingreso-page`;
+                const targetPage = document.getElementById(pageIdForCategory);
+                if (targetPage) showPage(targetPage);
+            }
+        }
+
+
+        function addNewCategoryPrompt() {
+            const nombreNuevaCategoria = prompt("Ingrese el nombre para la nueva categoría/hoja:");
+            if (nombreNuevaCategoria && nombreNuevaCategoria.trim() !== "") {
+                const nombreTrimmed = nombreNuevaCategoria.trim();
+                if (categorias.some(cat => cat.nombre.toLowerCase() === nombreTrimmed.toLowerCase())) {
+                    alert("Error: Ya existe una categoría con ese nombre.");
+                    return;
+                }
+                const idNuevaCategoria = nombreTrimmed.replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '');
+                if (!idNuevaCategoria) {
+                    alert("Error: Nombre de categoría inválido para generar un ID.");
+                    return;
+                }
+                const prefijoNuevo = getNextCategoryPrefix(categorias);
+                if (prefijoNuevo === "Z_ERROR") return;
+
+                categorias.push({ id: idNuevaCategoria, nombre: nombreTrimmed, prefijoCod: prefijoNuevo });
+                localStorage.setItem('categoriasDB', JSON.stringify(categorias));
+
+                generarPaginasCategorias();
+                populateSearchCategoryFilter();
+
+                const nuevaPaginaId = `${idNuevaCategoria.toLowerCase()}-ingreso-page`;
+                const nuevaPagina = document.getElementById(nuevaPaginaId);
+                if (nuevaPagina) {
+                    showPage(nuevaPagina);
+                } else {
+                    renderFooterTabs();
+                }
+                alert(`Categoría "${nombreTrimmed}" creada con prefijo ${prefijoNuevo}.`);
+            }
+        }
+
+        function handleDeleteCategory(categoryIdToDelete, categoryNameToDelete) {
+            if (!confirm(`¿Está seguro de que desea eliminar la categoría "${categoryNameToDelete}" y todos sus productos? Esta acción no se puede deshacer.`)) {
+                return;
+            }
+
+            categorias = categorias.filter(cat => cat.id !== categoryIdToDelete);
+            localStorage.setItem('categoriasDB', JSON.stringify(categorias));
+
+            todosLosProductos = todosLosProductos.filter(prod => prod.tipo_producto !== categoryNameToDelete);
+            localStorage.setItem('todosLosProductosDB', JSON.stringify(todosLosProductos));
+
+            const categoryPageElementId = `${categoryIdToDelete.toLowerCase()}-ingreso-page`;
+            const categoryPageElement = document.getElementById(categoryPageElementId);
+            if (categoryPageElement) {
+                categoryPageElement.remove();
+                allPages = allPages.filter(page => page && page.id !== categoryPageElementId);
+                delete allCategoryPageElements[`${categoryIdToDelete.toLowerCase()}IngresoPage`];
+            }
+
+            populateSearchCategoryFilter();
+            renderListaProductos();
+
+            const currentPage = Array.from(allPages).find(p => p && !p.classList.contains('hidden'));
+            if (!currentPage || currentPage.id === categoryPageElementId) {
+                showPage(menuPage);
+            } else {
+                renderFooterTabs();
+            }
+
+            alert(`Categoría "${categoryNameToDelete}" eliminada exitosamente.`);
+        }
+
+
+        function renderTablaCategoriaIngresados(nombreCategoria) {
+            const categoria = categorias.find(c => c.nombre === nombreCategoria);
+            if (!categoria) return;
+            const categoriaId = categoria.id.toLowerCase();
+
+            const tablaBody = document.getElementById(`tabla-${categoriaId}-ingresados-body`);
+            if (!tablaBody) return;
+            tablaBody.innerHTML = '';
+            const productosCategoria = todosLosProductos.filter(p => p.tipo_producto === nombreCategoria)
+                                            .sort((a,b) => (a.producto || "").localeCompare(b.producto || ""));
+            productosCategoria.forEach(prod => {
+                const originalIndex = todosLosProductos.findIndex(p => p.cod_producto === prod.cod_producto);
+                const row = tablaBody.insertRow();
+                row.innerHTML = `
+                    <td>${prod.cod_producto || ''}</td>
+                    <td>${prod.producto || ''}</td>
+                    <td class="text-center">${formatInteger(prod.c_cantidad || 0)}</td>
+                    <td class="text-right">${formatAsPeruCurrency(prod.costo || 0)}</td>
+                    <td class="text-right">${formatAsPeruCurrency(prod.importe_total || 0)}</td>
+                    <td class="text-center">${formatInteger(prod.compra_unidades || 0)}</td>
+                    <td class="text-right">${formatAsPeruCurrency(prod.costo_unitario || 0)}</td>
+                    <td class="text-center">${formatTwoDecimals(prod.mg_porcentaje || 0)}</td>
+                    <td class="text-right">${formatAsPeruCurrency(prod.venta_unitaria || 0)}</td>
+                    <td>${prod.tipo_producto || 'Desconocido'}</td>
+                    <td class="no-print text-center">
+                        <button class="text-blue-500 hover:text-blue-700 dark:text-sky-400 dark:hover:text-sky-300 table-action-button btn-edit-producto" data-index="${originalIndex}" data-category-id="${categoria.id}" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 table-action-button btn-delete-producto" data-index="${originalIndex}" title="Eliminar">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                `;
+            });
+            if (productosCategoria.length === 0) tablaBody.innerHTML = `<tr><td colspan="11" class="text-center py-3">No hay productos en la categoría ${nombreCategoria}.</td></tr>`;
+
+            tablaBody.querySelectorAll('.btn-edit-producto').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productIdx = parseInt(this.dataset.index);
+                    const catId = this.dataset.categoryId;
+                    populateProductFormForEdit(productIdx, catId);
+                });
+            });
+             tablaBody.querySelectorAll('.btn-delete-producto').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productIdxToDelete = parseInt(this.dataset.index);
+                    const productToDelete = todosLosProductos[productIdxToDelete];
+                    if (confirm(`¿Está seguro de que desea eliminar el producto "${productToDelete.producto}" (${productToDelete.cod_producto})? Esta acción no se puede deshacer.`)) {
+                        todosLosProductos.splice(productIdxToDelete, 1);
+                        localStorage.setItem('todosLosProductosDB', JSON.stringify(todosLosProductos));
+                        alert('Producto eliminado.');
+                        renderTablaCategoriaIngresados(nombreCategoria);
+                        renderListaProductos();
+                    }
+                });
+            });
+        }
+
+        const listaProductosTbody = document.getElementById('lista-productos-tbody');
+        function renderListaProductos() {
+            if (!listaProductosTbody) return;
+            listaProductosTbody.innerHTML = '';
+
+            const categoriasOrdenadas = categorias.map(c => c.nombre);
+
+            let hayProductosListados = false;
+            categoriasOrdenadas.forEach(nombreCategoria => {
+                const productosDeEstaCategoria = todosLosProductos
+                    .filter(p => p.tipo_producto === nombreCategoria)
+                    .sort((a, b) => (a.cod_producto || "").localeCompare(b.cod_producto || ""));
+
+                if (productosDeEstaCategoria.length > 0) {
+                    hayProductosListados = true;
+                    const headerRow = listaProductosTbody.insertRow();
+                    const headerCell = headerRow.insertCell();
+                    headerCell.colSpan = 10;
+                    headerCell.textContent = nombreCategoria.toUpperCase();
+                    headerCell.classList.add('category-header-row'); // Aplicar clase para estilo
+
+                    productosDeEstaCategoria.forEach(prod => {
+                        const row = listaProductosTbody.insertRow();
+                        row.innerHTML = `
+                            <td>${prod.cod_producto || ''}</td>
+                            <td>${prod.producto || ''}</td>
+                            <td class="text-center">${formatInteger(prod.c_cantidad || 0)}</td>
+                            <td class="text-right">${formatAsPeruCurrency(prod.costo || 0)}</td>
+                            <td class="text-right">${formatAsPeruCurrency(prod.importe_total || 0)}</td>
+                            <td class="text-center">${formatInteger(prod.compra_unidades || 0)}</td>
+                            <td class="text-right">${formatAsPeruCurrency(prod.costo_unitario || 0)}</td>
+                            <td class="text-center">${formatTwoDecimals(prod.mg_porcentaje || 0)}</td>
+                            <td class="text-right">${formatAsPeruCurrency(prod.venta_unitaria || 0)}</td>
+                            <td>${prod.tipo_producto || 'Desconocido'}</td>
+                        `;
+                    });
+                }
+            });
+            if (!hayProductosListados && todosLosProductos.length === 0) {
+                 listaProductosTbody.innerHTML = '<tr><td colspan="10" class="text-center py-4">No hay productos.</td></tr>';
+            } else if (!hayProductosListados && todosLosProductos.length > 0) {
+                listaProductosTbody.innerHTML = '<tr><td colspan="10" class="text-center py-4">No hay productos para mostrar en las categorías definidas.</td></tr>';
+            }
+        }
+
+        // --- VENTA PAGE LOGIC ---
+        const ventaTableBodyEl = document.getElementById('venta-table-body');
+        const fechaVentaSpan = document.getElementById('venta-fecha');
+        const notaVentaNumeroSpan = document.getElementById('nota-venta-numero');
+        const btnGuardarVerRegistro = document.getElementById('btn-guardar-ver-registro');
+        const btnLimpiarVenta = document.getElementById('btn-limpiar-venta');
+        const btnAddVentaRow = document.getElementById('btn-add-venta-row');
+        const btnImprimirVenta = document.getElementById('btn-imprimir-venta');
+        const ventaDescuentoInput = document.getElementById('venta-descuento');
+        const ventaSubtotalSpan = document.getElementById('venta-subtotal');
+        const ventaTotalFinalSpan = document.getElementById('venta-total-final');
+        const NUM_FILAS_INICIALES_VENTA = 5;
+
+        function formatNumeroNota(num) {
+            return String(num).padStart(4, '0');
+        }
+
+        function addNuevaFilaVenta(producto = null, precio = null, cantidad = 1) {
+            if (!ventaTableBodyEl) return;
+            const row = ventaTableBodyEl.insertRow();
+            const rowIndex = ventaTableBodyEl.rows.length -1;
+            row.innerHTML = `
+                <td><input type="number" name="cantidad_${rowIndex}" class="form-input text-center" min="1" value="${cantidad}"></td>
+                <td><input type="text" name="producto_${rowIndex}" class="form-input" value="${producto || ''}" readonly></td>
+                <td><input type="text" name="precio_${rowIndex}" class="form-input text-right" value="${precio ? formatAsPeruCurrency(precio) : ''}" readonly></td>
+                <td><input type="text" name="importe_${rowIndex}" class="form-input text-right" readonly></td>
+            `;
+            if (producto) {
+                const importe = (parseFloat(cantidad) || 0) * (parseInputNumber(precio) || 0);
+                row.querySelector(`input[name="importe_${rowIndex}"]`).value = formatAsPeruCurrency(importe);
+            }
+            const cantidadInput = row.querySelector(`input[name^="cantidad_"]`);
+            if (cantidadInput) {
+                cantidadInput.addEventListener('input', calcularTotalesVenta);
+            }
+            calcularTotalesVenta();
+        }
+
+        function limpiarFormularioVenta() {
+            const ahora = new Date();
+            if(fechaVentaSpan) fechaVentaSpan.textContent = ahora.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            // La hora no se muestra en el formulario de nueva venta, solo se guarda.
+            if(notaVentaNumeroSpan) notaVentaNumeroSpan.textContent = formatNumeroNota(proximoNumeroNotaVenta);
+            if(document.getElementById('cliente')) document.getElementById('cliente').value = '';
+            if(document.getElementById('direccion')) document.getElementById('direccion').value = '';
+            if(ventaDescuentoInput) {
+                ventaDescuentoInput.value = formatTwoDecimals(0);
+            }
+
+            if (ventaTableBodyEl) {
+                ventaTableBodyEl.innerHTML = '';
+                for (let i = 0; i < NUM_FILAS_INICIALES_VENTA; i++) {
+                    addNuevaFilaVenta();
+                }
+            }
+            calcularTotalesVenta();
+        }
+
+
+        function guardarVentaActualYNavegar() {
+            const itemsVenta = [];
+            if (!ventaTableBodyEl) return;
+            for (let i = 0; i < ventaTableBodyEl.rows.length; i++) {
+                const row = ventaTableBodyEl.rows[i];
+                const productoInput = row.querySelector(`input[name="producto_${i}"]`);
+                if (productoInput && productoInput.value) {
+                    itemsVenta.push({
+                        cantidad: row.querySelector(`input[name="cantidad_${i}"]`).value,
+                        producto: productoInput.value,
+                        precio_u: String(parseInputNumber(row.querySelector(`input[name="precio_${i}"]`).value)),
+                        importe: String(parseInputNumber(row.querySelector(`input[name="importe_${i}"]`).value)),
+                    });
+                }
+            }
+
+            if (itemsVenta.length > 0) {
+                const ahora = new Date();
+                const fechaActual = ahora.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                const horaActual = ahora.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+                const ventaActual = {
+                    numeroNota: formatNumeroNota(proximoNumeroNotaVenta),
+                    fecha: fechaActual, // Usar fecha actual al guardar
+                    hora: horaActual,   // Guardar hora actual
+                    cliente: document.getElementById('cliente').value,
+                    direccion: document.getElementById('direccion').value,
+                    items: itemsVenta,
+                    subtotal: ventaSubtotalSpan.textContent,
+                    descuento: formatAsPeruCurrency(ventaDescuentoInput.value),
+                    totalPagado: ventaTotalFinalSpan.textContent
+                };
+                ventasGuardadas.push(ventaActual);
+                localStorage.setItem('ventasGuardadasDB', JSON.stringify(ventasGuardadas));
+                proximoNumeroNotaVenta++;
+                localStorage.setItem('proximoNumeroNotaVentaDB', proximoNumeroNotaVenta);
+                alert(`Venta Nº ${ventaActual.numeroNota} guardada.`);
+                limpiarFormularioVenta();
+                showPage(infoVentasPage);
+            } else {
+                alert("No hay productos en la venta para guardar.");
+            }
+        }
+
+        if (btnAddVentaRow) btnAddVentaRow.addEventListener('click', () => addNuevaFilaVenta());
+
+        function calcularTotalesVenta() {
+            if (!ventaTableBodyEl || !ventaSubtotalSpan || !ventaDescuentoInput || !ventaTotalFinalSpan) return;
+            let subtotal = 0;
+            for (let i = 0; i < ventaTableBodyEl.rows.length; i++) {
+                const row = ventaTableBodyEl.rows[i];
+                const importeInput = row.querySelector(`input[name="importe_${i}"]`);
+                if (importeInput && importeInput.value) {
+                    subtotal += parseInputNumber(importeInput.value);
+                }
+            }
+            ventaSubtotalSpan.textContent = formatAsPeruCurrency(subtotal);
+            const descuento = parseInputNumber(ventaDescuentoInput.value);
+            const totalFinal = subtotal - descuento;
+            ventaTotalFinalSpan.textContent = formatAsPeruCurrency(totalFinal);
+        }
+
+        if (ventaTableBodyEl) {
+            ventaTableBodyEl.addEventListener('input', function(event) {
+                const target = event.target;
+                if (target.name && (target.name.startsWith('cantidad_'))) {
+                    const row = target.closest('tr');
+                    if (!row) return;
+                    const cantidadInput = row.querySelector('input[name^="cantidad_"]');
+                    const precioInput = row.querySelector('input[name^="precio_"]');
+                    const importeInput = row.querySelector('input[name^="importe_"]');
+                    const productoInput = row.querySelector('input[name^="producto_"]');
+
+                    if (productoInput && productoInput.value) {
+                        const cant = parseInputNumber(cantidadInput.value);
+                        const prec = parseInputNumber(precioInput.value);
+                        if (importeInput) importeInput.value = formatAsPeruCurrency(cant * prec);
+                    }
+                    calcularTotalesVenta();
+                }
+            });
+        }
+        if(ventaDescuentoInput) {
+            ventaDescuentoInput.addEventListener('focus', function() { this.value = parseInputNumber(this.value); });
+            ventaDescuentoInput.addEventListener('blur', function() {
+                this.value = formatTwoDecimals(this.value);
+                calcularTotalesVenta();
+            });
+            ventaDescuentoInput.addEventListener('input', calcularTotalesVenta);
+        }
+        if(btnGuardarVerRegistro) btnGuardarVerRegistro.addEventListener('click', guardarVentaActualYNavegar);
+        if(btnLimpiarVenta) btnLimpiarVenta.addEventListener('click', () => limpiarFormularioVenta());
+
+        if(btnImprimirVenta) {
+            btnImprimirVenta.addEventListener('click', () => {
+                const descuentoLinea = document.getElementById('descuento-linea-total');
+                const descuentoValor = parseInputNumber(ventaDescuentoInput.value);
+
+                if (descuentoValor === 0 && descuentoLinea) {
+                    descuentoLinea.classList.add('hidden-on-print');
+                } else if (descuentoLinea) {
+                    descuentoLinea.classList.remove('hidden-on-print');
+                }
+
+                document.body.classList.add('printing-venta-page');
+                window.print();
+            });
+        }
+
+        // --- PRODUCT SEARCH FUNCTIONALITY ---
+        const searchInput = document.getElementById('search-input');
+        const searchResultsTbody = document.getElementById('search-results-tbody');
+        const clearSearchBtn = document.getElementById('clear-search-btn');
+
+        function performSearch() {
+            if (!searchInput || !searchCategoryFilter || !searchResultsTbody) return;
+
+            const query = searchInput.value.toLowerCase().trim();
+            const selectedCategoryName = searchCategoryFilter.value;
+
+            let filteredProducts = todosLosProductos;
+
+            if (selectedCategoryName !== "all") {
+                filteredProducts = filteredProducts.filter(p => p.tipo_producto === selectedCategoryName);
+            }
+
+            if (query !== '') {
+                filteredProducts = filteredProducts.filter(p =>
+                    (p.producto && p.producto.toLowerCase().includes(query)) ||
+                    (p.cod_producto && p.cod_producto.toLowerCase().includes(query))
+                );
+            }
+            renderSearchResults(filteredProducts);
+        }
+
+
+        function renderSearchResults(results) {
+            if (!searchResultsTbody) return;
+            searchResultsTbody.innerHTML = '';
+            if (results.length === 0 ) {
+                 const query = searchInput.value.trim();
+                 const selectedCategoryName = searchCategoryFilter.value;
+                 if (query !== '' || selectedCategoryName !== 'all') {
+                    searchResultsTbody.innerHTML = '<tr><td colspan="5" class="text-center py-3 text-gray-500 dark:text-gray-400">No se encontraron productos con los filtros aplicados.</td></tr>';
+                 } else {
+                     searchResultsTbody.innerHTML = '<tr><td colspan="5" class="text-center py-3 text-gray-500 dark:text-gray-400">Ingrese un término de búsqueda o seleccione una categoría.</td></tr>';
+                 }
+                return;
+            }
+            results.slice(0, 25).forEach(prod => {
+                const row = searchResultsTbody.insertRow();
+                row.innerHTML = `
+                    <td>${prod.cod_producto}</td>
+                    <td>${prod.producto}</td>
+                    <td class="text-right">${formatAsPeruCurrency(prod.venta_unitaria || 0)}</td>
+                    <td>${prod.tipo_producto}</td>
+                    <td class="text-center no-print">
+                        <button class="action-button action-button-buy btn-comprar-busqueda text-xs py-1 px-2" data-cod="${prod.cod_producto}">Agregar</button>
+                    </td>
+                `;
+            });
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', performSearch);
+        }
+        if (searchCategoryFilter) {
+            searchCategoryFilter.addEventListener('change', performSearch);
+        }
+
+
+        if (clearSearchBtn) {
+            clearSearchBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                if(searchCategoryFilter) searchCategoryFilter.value = 'all';
+                performSearch();
+            });
+        }
+
+        if (searchResultsTbody) {
+            searchResultsTbody.addEventListener('click', function(event){
+                const target = event.target;
+                if (target.classList.contains('btn-comprar-busqueda')) {
+                    const codProducto = target.dataset.cod;
+                    const productoEncontrado = todosLosProductos.find(p => p.cod_producto === codProducto);
+                    if (productoEncontrado) {
+                        agregarProductoAVenta(productoEncontrado);
+                    }
+                }
+            });
+        }
+
+        function agregarProductoAVenta(producto) {
+            if (!ventaTableBodyEl) return;
+            let primeraFilaVacia = Array.from(ventaTableBodyEl.rows).find(row => {
+                const inputProducto = row.querySelector('input[name^="producto_"]');
+                return !inputProducto.value.trim();
+            });
+
+            if (!primeraFilaVacia) {
+                 addNuevaFilaVenta(producto.producto, producto.venta_unitaria || 0, 1);
+            } else {
+                const cantidadInput = primeraFilaVacia.querySelector('input[name^="cantidad_"]');
+                const productoInput = primeraFilaVacia.querySelector('input[name^="producto_"]');
+                const precioInput = primeraFilaVacia.querySelector('input[name^="precio_"]');
+                const importeInput = primeraFilaVacia.querySelector('input[name^="importe_"]');
+
+                cantidadInput.value = 1;
+                productoInput.value = producto.producto;
+                precioInput.value = formatAsPeruCurrency(producto.venta_unitaria || 0);
+
+                const importe = (1 * parseInputNumber(producto.venta_unitaria || 0));
+                importeInput.value = formatAsPeruCurrency(importe);
+
+                cantidadInput.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            calcularTotalesVenta();
+        }
+
+        // --- SALES INFO PAGE LOGIC (INFO. VENTAS) ---
+        const infoVentasTbody = document.getElementById('info-ventas-tbody');
+        function renderInfoVentas() {
+            if (!infoVentasTbody) return;
+            infoVentasTbody.innerHTML = '';
+            if (ventasGuardadas.length === 0) {
+                infoVentasTbody.innerHTML = '<tr><td colspan="6" class="text-center py-4">No hay ventas guardadas.</td></tr>'; // Colspan a 6
+                return;
+            }
+            const ventasOrdenadas = [...ventasGuardadas].reverse();
+            ventasOrdenadas.forEach(venta => {
+                const row = infoVentasTbody.insertRow();
+                row.innerHTML = `
+                    <td>${venta.numeroNota}</td>
+                    <td>${venta.fecha}</td>
+                    <td>${venta.hora || '--:--'}</td> <td>${venta.cliente || 'N/A'}</td>
+                    <td class="text-right">${venta.totalPagado}</td>
+                    <td class="text-center no-print">
+                        <button class="text-sky-600 hover:text-sky-800 dark:text-sky-400 dark:hover:text-sky-300 table-action-button btn-ver-detalle-venta" data-nota="${venta.numeroNota}" title="Ver Detalle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                `;
+            });
+            infoVentasTbody.querySelectorAll('.btn-ver-detalle-venta').forEach(button => {
+                button.addEventListener('click', function() {
+                    const numeroNota = this.dataset.nota;
+                    const ventaSeleccionada = ventasGuardadas.find(v => v.numeroNota === numeroNota);
+                    if (ventaSeleccionada) {
+                        renderVentaDetalle(ventaSeleccionada);
+                        showPage(detalleVentaPage);
+                    } else {
+                        alert('No se encontró la venta para mostrar el detalle.');
+                    }
+                });
+            });
+        }
+
+        // --- SALE DETAIL PAGE LOGIC (DETALLE DE VENTA) ---
+        function renderVentaDetalle(ventaData) {
+            if (!detalleVentaPage || !ventaData) return;
+
+            document.getElementById('detalle-venta-fecha').textContent = ventaData.fecha || '';
+            document.getElementById('detalle-venta-hora').textContent = ventaData.hora || '--:--'; // Mostrar hora
+            document.getElementById('detalle-venta-numero-nota').textContent = ventaData.numeroNota || '';
+            document.getElementById('detalle-venta-cliente').textContent = ventaData.cliente || 'N/A';
+            document.getElementById('detalle-venta-direccion').textContent = ventaData.direccion || 'N/A';
+
+            const detalleTableBody = document.getElementById('detalle-venta-table-body');
+            detalleTableBody.innerHTML = '';
+
+            if (ventaData.items && ventaData.items.length > 0) {
+                ventaData.items.forEach(item => {
+                    const row = detalleTableBody.insertRow();
+                    row.innerHTML = `
+                        <td class="text-center">${item.cantidad}</td>
+                        <td>${item.producto}</td>
+                        <td class="text-right">${formatAsPeruCurrency(item.precio_u)}</td>
+                        <td class="text-right">${formatAsPeruCurrency(item.importe)}</td>
+                    `;
+                });
+            } else {
+                detalleTableBody.innerHTML = '<tr><td colspan="4" class="text-center py-3">No hay productos en esta venta.</td></tr>';
+            }
+
+            document.getElementById('detalle-venta-subtotal').textContent = ventaData.subtotal || formatAsPeruCurrency(0);
+            document.getElementById('detalle-venta-descuento').textContent = ventaData.descuento || formatAsPeruCurrency(0);
+            document.getElementById('detalle-venta-total-final').textContent = ventaData.totalPagado || formatAsPeruCurrency(0);
+
+            const btnImprimirDetalle = document.getElementById('btn-imprimir-detalle-venta');
+            if(btnImprimirDetalle) {
+                btnImprimirDetalle.onclick = () => {
+                    document.body.classList.add('printing-detalle-page');
+                    window.print();
+                };
+            }
+        }
+
+
+        // --- DARK MODE LOGIC ---
+        function applyDarkMode(isDark) {
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                if (themeToggleCheckbox) themeToggleCheckbox.checked = true;
+            } else {
+                document.body.classList.remove('dark-mode');
+                if (themeToggleCheckbox) themeToggleCheckbox.checked = false;
+            }
+        }
+
+        function toggleDarkMode() {
+            const isDarkModeEnabled = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkModeEnabled', isDarkModeEnabled);
+            if (themeToggleCheckbox) themeToggleCheckbox.checked = isDarkModeEnabled;
+        }
+
+        function loadDarkModePreference() {
+            const darkModeSaved = localStorage.getItem('darkModeEnabled');
+            if (darkModeSaved === 'true') {
+                applyDarkMode(true);
+            } else {
+                applyDarkMode(false);
+            }
+        }
+
+        if (themeToggleCheckbox) {
+            themeToggleCheckbox.addEventListener('change', toggleDarkMode);
+        }
+
+        // --- AFTER PRINT CLEANUP ---
+        window.addEventListener('afterprint', () => {
+            document.body.classList.remove('printing-venta-page', 'printing-detalle-page');
+        });
+
+        // --- EXCEL UPLOAD LOGIC ---
+        function normalizeNameForMatching(name) {
+            if (typeof name !== 'string') name = String(name);
+            return name.trim().toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/\s+/g, '');
+        }
+
+        if (btnActualizarInfoExcel && excelFileInput) {
+            btnActualizarInfoExcel.addEventListener('click', () => {
+                excelFileInput.click();
+            });
+
+            excelFileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (!file) {
+                    excelUploadStatus.textContent = 'No se seleccionó ningún archivo.';
+                    return;
+                }
+
+                excelUploadStatus.innerHTML = `Procesando archivo: ${file.name}... <i class="fas fa-spinner fa-spin ml-2"></i>`;
+                const reader = new FileReader();
+
+                reader.onload = (e) => {
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, { type: 'array' });
+                        let categoriasProcesadas = 0;
+                        let productosNuevosEnTotal = 0;
+                        let productosActualizadosEnTotal = 0;
+                        let logMessages = [];
+
+                        workbook.SheetNames.forEach(sheetName => {
+                            const normalizedSheetName = normalizeNameForMatching(sheetName);
+                            const categoriaCoincidente = categorias.find(c => normalizeNameForMatching(c.nombre) === normalizedSheetName);
+
+                            if (categoriaCoincidente) {
+                                logMessages.push(`<strong>Hoja "${sheetName}"</strong> (coincide con categoría "${categoriaCoincidente.nombre}"):`);
+                                const worksheet = workbook.Sheets[sheetName];
+                                const sheetDataAsArray = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: null });
+
+                                if (!sheetDataAsArray || sheetDataAsArray.length < 3) {
+                                    logMessages.push(`  <span style="color:orange;">ADVERTENCIA:</span> Hoja "${sheetName}" no contiene suficientes filas para procesar datos desde la fila 3. Se requieren al menos 3 filas.`);
+                                    return;
+                                }
+
+                                let currentMaxNumForCategory = 0;
+                                todosLosProductos.forEach(p => {
+                                    if (p.tipo_producto === categoriaCoincidente.nombre && p.cod_producto && p.cod_producto.startsWith(categoriaCoincidente.prefijoCod)) {
+                                        const numPart = parseInt(p.cod_producto.substring(categoriaCoincidente.prefijoCod.length), 10);
+                                        if (!isNaN(numPart) && numPart > currentMaxNumForCategory) {
+                                            currentMaxNumForCategory = numPart;
+                                        }
+                                    }
+                                });
+                                let nextProductNumForCategory = currentMaxNumForCategory + 1;
+
+                                let productosNuevosCategoria = 0;
+                                let productosActualizadosCategoria = 0;
+
+                                for (let rowIndex = 2; rowIndex < sheetDataAsArray.length; rowIndex++) { // Fila 3 del Excel es rowIndex = 2
+                                    const rowArray = sheetDataAsArray[rowIndex];
+                                    if (!rowArray || rowArray.length < 9) { // Necesitamos hasta la columna I (índice 8)
+                                        logMessages.push(`  Fila ${rowIndex + 1} del Excel en hoja "${sheetName}" omitida: Fila incompleta o vacía.`);
+                                        continue;
+                                    }
+
+                                    const productoNombreExcel = rowArray[1] ? String(rowArray[1]).trim() : null; // Col B
+
+                                    if (!productoNombreExcel) {
+                                        logMessages.push(`  Fila ${rowIndex + 1} del Excel (Hoja "${sheetName}", Col B) omitida: Nombre de producto vacío.`);
+                                        continue;
+                                    }
+
+                                    // Leer datos de las columnas C a I
+                                    const cCantidadExcel = String(Math.round(parseInputNumber(rowArray[2])));      // Col C
+                                    const costoExcel = String(parseInputNumber(rowArray[3]).toFixed(2));            // Col D
+                                    const importeTotalExcel = String(parseInputNumber(rowArray[4]).toFixed(2));    // Col E
+                                    const compraUnidadesExcel = String(Math.round(parseInputNumber(rowArray[5]))); // Col F
+                                    const costoUnitarioExcel = String(parseInputNumber(rowArray[6]).toFixed(2));   // Col G
+                                    const mgPorcentajeExcel = String(parseInputNumber(rowArray[7]).toFixed(2));    // Col H
+                                    const ventaUnitariaExcel = String(parseInputNumber(rowArray[8]).toFixed(2));   // Col I
+
+                                    const productoDataFromExcel = {
+                                        producto: productoNombreExcel,
+                                        c_cantidad: cCantidadExcel,
+                                        costo: costoExcel,
+                                        importe_total: importeTotalExcel,
+                                        compra_unidades: compraUnidadesExcel,
+                                        costo_unitario: costoUnitarioExcel,
+                                        mg_porcentaje: mgPorcentajeExcel,
+                                        venta_unitaria: ventaUnitariaExcel,
+                                        tipo_producto: categoriaCoincidente.nombre
+                                    };
+
+                                    const existingProductIndex = todosLosProductos.findIndex(p =>
+                                        p.tipo_producto === categoriaCoincidente.nombre &&
+                                        normalizeNameForMatching(p.producto) === normalizeNameForMatching(productoNombreExcel)
+                                    );
+
+                                    if (existingProductIndex !== -1) {
+                                        // Producto existente: Actualizar
+                                        const originalCodProducto = todosLosProductos[existingProductIndex].cod_producto;
+                                        todosLosProductos[existingProductIndex] = {
+                                            ...productoDataFromExcel, // Datos del Excel
+                                            cod_producto: originalCodProducto // Mantener código original
+                                        };
+                                        productosActualizadosCategoria++;
+                                        logMessages.push(`  <span style="color:blue;">ACTUALIZADO:</span> Producto "${productoNombreExcel}" (Código: ${originalCodProducto}) en "${categoriaCoincidente.nombre}".`);
+                                    } else {
+                                        // Producto nuevo: Añadir
+                                        const nuevoCodProducto = `${categoriaCoincidente.prefijoCod}${String(nextProductNumForCategory++).padStart(3, '0')}`;
+                                        todosLosProductos.push({
+                                            ...productoDataFromExcel,
+                                            cod_producto: nuevoCodProducto
+                                        });
+                                        productosNuevosCategoria++;
+                                        logMessages.push(`  <span style="color:green;">NUEVO:</span> Producto "${productoNombreExcel}" (Código: ${nuevoCodProducto}) añadido a "${categoriaCoincidente.nombre}".`);
+                                    }
+                                }
+
+                                if (productosNuevosCategoria > 0 || productosActualizadosCategoria > 0) {
+                                    categoriasProcesadas++;
+                                    productosNuevosEnTotal += productosNuevosCategoria;
+                                    productosActualizadosEnTotal += productosActualizadosCategoria;
+                                    logMessages.push(`  En "${categoriaCoincidente.nombre}": ${productosNuevosCategoria} nuevos, ${productosActualizadosCategoria} actualizados.`);
+                                } else {
+                                    logMessages.push(`  No se añadieron ni actualizaron productos para "${categoriaCoincidente.nombre}" desde esta hoja.`);
+                                }
+                            } else {
+                                logMessages.push(`Hoja "${sheetName}" no coincide con ninguna categoría existente. Omitida.`);
+                            }
+                        });
+
+                        localStorage.setItem('todosLosProductosDB', JSON.stringify(todosLosProductos));
+
+                        renderListaProductos();
+                        categorias.forEach(cat => renderTablaCategoriaIngresados(cat.nombre));
+                        if (document.getElementById('buscador-page') && !document.getElementById('buscador-page').classList.contains('hidden')) {
+                            performSearch();
+                        }
+
+                        const finalMessage = `Actualización desde Excel: ${productosNuevosEnTotal} productos nuevos añadidos, ${productosActualizadosEnTotal} productos actualizados en ${categoriasProcesadas} categorías.`;
+                        excelUploadStatus.innerHTML = `<strong>${finalMessage}</strong><br><br><strong>Detalles del proceso:</strong><br><div style="max-height: 150px; overflow-y:auto; border: 1px solid #ccc; padding: 5px; margin-top:5px;">${logMessages.join("<br>")}</div>`;
+                        alert(finalMessage);
+
+                    } catch (error) {
+                        console.error("Error procesando el archivo Excel:", error);
+                        excelUploadStatus.textContent = "Error al procesar el archivo Excel. Verifique el formato y el contenido. Detalles en consola.";
+                        alert("Error al procesar el archivo Excel. Verifique el formato y el contenido.");
+                    } finally {
+                        excelFileInput.value = ''; // Reset file input
+                    }
+                };
+
+                reader.onerror = () => {
+                    excelUploadStatus.textContent = "Error al leer el archivo.";
+                    alert("Error al leer el archivo.");
+                    excelFileInput.value = ''; // Reset file input
+                };
+                reader.readAsArrayBuffer(file);
+            });
+        }
+
+        // --- EXPORT/UPDATE EXISTING EXCEL (File System Access API) ---
+        // La funcionalidad de exportar/actualizar directamente un archivo Excel existente ha sido eliminada.
+        // El botón btnExportAllExcel y su input selectExcelForUpdateInput ya no tienen un event listener asociado
+        // para la funcionalidad de File System Access API.
+
+
+        // --- INITIALIZATION ON DOM CONTENT LOADED ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize static pages first in allPages array
+            allPages = [menuPage, ventaPage, productosPage, buscadorPage, infoVentasPage, detalleVentaPage, configuracionesPage];
+
+            generarPaginasCategorias(); // Esto añadirá las páginas de categoría dinámicas a allPages
+            loadDarkModePreference();   // Cargar preferencia de modo oscuro
+            showPage(menuPage);         // Mostrar página de inicio (menú)
+            limpiarFormularioVenta();   // Preparar formulario de venta
+            populateSearchCategoryFilter(); // Llenar filtro de categorías en el buscador
+            renderListaProductos();     // Renderizar lista inicial de productos
+            renderInfoVentas();         // Renderizar información de ventas guardadas
+
+            // ** INICIO: Registrar Service Worker para PWA **
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('service-worker.js')
+                        .then(registration => {
+                            console.log('ServiceWorker registrado con éxito con alcance: ', registration.scope);
+                        })
+                        .catch(error => {
+                            console.log('Fallo en el registro de ServiceWorker: ', error);
+                        });
+                });
+            }
+            // ** FIN: Registrar Service Worker para PWA **
+        });
+
+    </script>
+
+</body>
+</html>

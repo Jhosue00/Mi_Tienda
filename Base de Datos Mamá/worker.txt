@@ -1,0 +1,164 @@
+// service-worker.js
+
+// Nombre de la caché
+const CACHE_NAME = 'huequito-pos-cache-v1';
+
+// Archivos y recursos a cachear
+// Es importante listar aquí todos los archivos HTML, CSS, JS principales y cualquier imagen o fuente estática
+// que quieras que estén disponibles sin conexión.
+const urlsToCache = [
+  'TiendaHuequito.html',
+  'manifest.json', // El propio manifest
+  // Archivos CSS (si tuvieras alguno local además de Tailwind CDN)
+  // 'css/style.css',
+  // Archivos JS (si tuvieras alguno local además de los CDNs)
+  // 'js/main.js',
+  // Fuentes (si las alojas localmente)
+  // '/fonts/Pacifico-Regular.ttf',
+  // '/fonts/Inter-Regular.woff2',
+  // Iconos para la PWA (asegúrate que las rutas coincidan con tu manifest.json y la ubicación real)
+  'images/icons/icon-72x72.png',
+  'images/icons/icon-96x96.png',
+  'images/icons/icon-128x128.png',
+  'images/icons/icon-144x144.png',
+  'images/icons/icon-152x152.png',
+  'images/icons/icon-192x192.png',
+  'images/icons/icon-384x384.png',
+  'images/icons/icon-512x512.png',
+  // Imagen de fondo (si quieres que esté disponible offline)
+  'https://marketplace.canva.com/EAFjvluV7Wo/2/0/1600w/canva-fondo-de-pantalla-gradiente-rosa-y-celeste-pastel-h_F-FdyBGSk.jpg',
+  // Imagen de negocio (si quieres que esté disponible offline)
+  'https://www.expacioweb.com/wp-content/uploads/2019/01/27418.jpg',
+  // CDNs (opcional, pero puede mejorar la carga offline si se cachean)
+  // Nota: Cachear recursos de terceros puede ser complicado debido a las políticas de CORS y actualizaciones.
+  // Para empezar, es más seguro enfocarse en tus propios recursos.
+  // 'https://cdn.tailwindcss.com',
+  // 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
+  // 'https://fonts.googleapis.com/css2?family=Pacifico&display=swap',
+  // 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
+  // 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'
+];
+
+// Evento 'install': Se dispara cuando el Service Worker se instala por primera vez.
+self.addEventListener('install', event => {
+  console.log('Service Worker: Instalando...');
+  // Realizar tareas de instalación, como abrir la caché y añadir los archivos principales.
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('Service Worker: Cache abierta, añadiendo archivos principales al caché.');
+        // Es importante manejar errores aquí, especialmente si algún recurso no se puede cargar.
+        // `addAll` es atómico: si un archivo falla, toda la operación falla.
+        return cache.addAll(urlsToCache.map(url => new Request(url, {cache: 'reload'}))) // Forzar recarga para evitar caché del navegador
+          .catch(error => {
+            console.error('Service Worker: Fallo al añadir archivos al caché durante la instalación:', error);
+            // Podrías querer no instalar el SW si los archivos críticos no se pueden cachear.
+            // O simplemente loguear el error y continuar.
+          });
+      })
+      .then(() => {
+        console.log('Service Worker: Todos los archivos principales cacheados. Instalación completa.');
+        return self.skipWaiting(); // Activa el nuevo Service Worker inmediatamente sin esperar a que las pestañas se cierren.
+      })
+  );
+});
+
+// Evento 'activate': Se dispara después de que el Service Worker se instala y está listo para tomar el control.
+self.addEventListener('activate', event => {
+  console.log('Service Worker: Activando...');
+  // Limpiar cachés antiguas si es necesario.
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Service Worker: Eliminando caché antigua:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => {
+      console.log('Service Worker: Activado y cachés antiguas limpiadas.');
+      return self.clients.claim(); // Permite que el SW activo controle clientes (pestañas) inmediatamente.
+    })
+  );
+});
+
+// Evento 'fetch': Se dispara cada vez que la aplicación realiza una petición de red (por ejemplo, cargar una imagen, un script, o una página).
+self.addEventListener('fetch', event => {
+  const requestUrl = new URL(event.request.url);
+
+  // Estrategia: Cache First (primero caché, luego red) para los recursos cacheados.
+  // Para otros recursos (especialmente CDNs o APIs), podrías querer una estrategia Network First o Stale-While-Revalidate.
+  // Por simplicidad, aquí usamos Cache First para todo lo que esté en la caché.
+
+  // Solo interceptar peticiones GET
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
+  // Si la URL es de un CDN conocido y no está en urlsToCache, podríamos optar por NetworkFirst o StaleWhileRevalidate
+  // if (requestUrl.hostname === 'cdn.tailwindcss.com' || requestUrl.hostname.includes('googleapis.com') || requestUrl.hostname === 'cdnjs.cloudflare.com') {
+  //   // Ejemplo de Network First (Intenta la red, si falla, usa la caché)
+  //   event.respondWith(
+  //     fetch(event.request)
+  //       .then(response => {
+  //         // Si la respuesta es válida, la clonamos y la guardamos en caché para futuras peticiones offline
+  //         if (response && response.status === 200) {
+  //           const responseToCache = response.clone();
+  //           caches.open(CACHE_NAME)
+  //             .then(cache => {
+  //               cache.put(event.request, responseToCache);
+  //             });
+  //         }
+  //         return response;
+  //       })
+  //       .catch(() => {
+  //         // Si la red falla, intenta obtenerla de la caché
+  //         return caches.match(event.request);
+  //       })
+  //   );
+  //   return;
+  // }
+
+
+  event.respondWith(
+    caches.match(event.request)
+      .then(cachedResponse => {
+        // Si la respuesta está en caché, la devolvemos.
+        if (cachedResponse) {
+          // console.log('Service Worker: Sirviendo desde caché:', event.request.url);
+          return cachedResponse;
+        }
+
+        // Si no está en caché, intentamos obtenerla de la red.
+        // console.log('Service Worker: Recurso no en caché, obteniendo de la red:', event.request.url);
+        return fetch(event.request).then(
+          networkResponse => {
+            // Si la respuesta de red es válida, la clonamos y la guardamos en caché para futuras peticiones.
+            if (networkResponse && networkResponse.status === 200) {
+              // Solo cacheamos nuestros propios recursos o los que explícitamente listamos.
+              // Evitamos cachear todo indiscriminadamente.
+              if (urlsToCache.includes(requestUrl.pathname) || urlsToCache.includes(requestUrl.href) || requestUrl.origin === self.origin) {
+                const responseToCache = networkResponse.clone();
+                caches.open(CACHE_NAME)
+                  .then(cache => {
+                    // console.log('Service Worker: Cacheando nuevo recurso de la red:', event.request.url);
+                    cache.put(event.request, responseToCache);
+                  });
+              }
+            }
+            return networkResponse;
+          }
+        ).catch(error => {
+          // Si la red falla y no está en caché, es un error genuino de conexión.
+          // Podrías devolver una página de fallback offline aquí si lo deseas.
+          console.error('Service Worker: Fallo al obtener de la red y no está en caché:', event.request.url, error);
+          // Ejemplo de página de fallback (necesitarías 'offline.html' en tus urlsToCache)
+          // if (event.request.mode === 'navigate') { // Solo para navegación de páginas
+          //   return caches.match('offline.html');
+          // }
+        });
+      })
+  );
+});
